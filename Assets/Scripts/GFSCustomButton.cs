@@ -27,8 +27,7 @@ public class GFSCustomButton : MonoBehaviour
 	{
 		if(onPress != null)
 		{
-			onPress(p_pressed);
+			onPress(p_pressed,gameObject.name);
 		}
-
 	}
 }
