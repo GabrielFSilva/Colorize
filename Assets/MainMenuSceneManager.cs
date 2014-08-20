@@ -9,7 +9,8 @@ public class MainMenuSceneManager : MonoBehaviour
 		TITLE,
 		OPTIONS,
 		INFO,
-		CHAPTER_SELECT
+		CHAPTER_SELECT,
+		STAGE_SELECT
 	}
 
 	public MainMenuStates currentState = MainMenuStates.TITLE;

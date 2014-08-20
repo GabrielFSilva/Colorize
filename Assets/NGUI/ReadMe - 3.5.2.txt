@@ -1,12 +1,21 @@
 ----------------------------------------------
             NGUI: Next-Gen UI kit
  Copyright © 2011-2014 Tasharen Entertainment
-            Version 3.5.2
+            Version 3.5.7
     http://www.tasharen.com/?page_id=197
             support@tasharen.com
 ----------------------------------------------
 
 Thank you for buying NGUI!
+
+PLEASE NOTE that NGUI can only be legally downloaded from the following 3 sources:
+
+  1. Unity Asset Store (Standard License)
+  2. www.tasharen.com (Standard License)
+  3. github.com/tasharen/ngui (Professional and Site Licenses)
+
+If you've obtained NGUI via some other means then note that your license is effectively invalid,
+as Tasharen cannot provide support for pirated and/or potentially modified software.
 
 Documentation can be found here: http://www.tasharen.com/forum/index.php?topic=6754.0
 
@@ -17,9 +26,9 @@ drop by the NGUI forum, found here: http://www.tasharen.com/forum/index.php?boar
  How To Update NGUI
 --------------------
 
-If you have the Professional Edition of NGUI that comes with Git access, just pull the latest changes.
+If you have the Professional or Site License of NGUI that comes with Git access, just pull the latest changes.
 
-If you have a Standard Edition:
+If you have a Standard License:
 
 1. In Unity, File -> New Scene
 2. Delete the NGUI folder from the Project View.
@@ -33,9 +42,9 @@ All can be found here: http://www.tasharen.com/forum/index.php?topic=6754.0
 
 Using NGUI with JavaScript (UnityScript)? Read this first: http://www.tasharen.com/forum/index.php?topic=6
 
--------------------
-  FreeType Library
--------------------
+------------------
+ FreeType Library
+------------------
 
 NGUI version 3.5.2 onwards includes the pre-compiled C++ FreeType library, which is an open source project (http://freetype.org/)
 FreeType license: http://git.savannah.gnu.org/cgit/freetype/freetype2.git/tree/docs/FTL.TXT
@@ -45,6 +54,74 @@ and it will not be included in the build of your game. It's only used in the edi
 -----------------
  Version History
 -----------------
+
+3.5.7
+- NEW: Added OnDragOver/OnDragOut to the Event Trigger.
+- FIX: Event delegate compilation on platforms that don't support reflection.
+- FIX: The example tooltip should no longer go off-screen.
+- FIX: Exposed UISprite's 'flip' option to scripting.
+- FIX: Context menu 'Attach' options should now work with multiple objects selected.
+- FIX: 'Attach' menu options should now all be undo-able via CTRL+Z.
+- FIX: Exposed UIButton.state for those that may need it for any reason.
+- FIX: UICamera's raycasts can now be clipped by nested panels.
+- FIX: MakePixelPerfect should not change the width if the label is set to "resize height".
+- FIX: Made UIButton.isEnabled work with a 2D collider.
+- FIX: Unity 4.2 compatibility tweaks.
+- FIX: Clip softness can now be 0.
+
+3.5.6
+- NEW: Added basic built-in data binding support (PropertyBinding script).
+- NEW: All delegates now support any number of parameters that you can set in inspector.
+- NEW: You can now nest scroll views (scroll views within scroll views). The built-in shaders support up to 3 scroll views, but you can add more.
+- NEW: You can now nest non-clipped panels within clipped panels and clipping will still work.
+- FIX: Fix for scroll bar size being wrong if the content was smaller than the scroll view.
+- FIX: UIInput will now load the saved value properly even if the "starting value" is not empty.
+- FIX: Drag & drop item will now always disable the tween or spring effect when it begins dragging.
+- FIX: UICamera's 'inputHasFocus' flag is now set when selection changes rather than every frame.
+- FIX: Anchors set to update only in OnEnable will now still update while in edit mode.
+- FIX: Triggering ActiveAnimation.Play will now immediately sample the animation.
+- FIX: Fixed the bug that was causing the atlas maker to eat up CPU.
+
+3.5.5
+- NEW: Added built-in support for endless scroll view (UIWrapContent).
+- NEW: Added a new example showing how to make endless scroll views.
+- NEW: Added an "Pivot" setting to the UIGrid that controls how the content is positioned.
+- NEW: Keyboard and controller navigation has been simplified (UIKeyNavigation).
+- NEW: Added EnvelopContent example script that shows how to resize a sprite to envelop custom content.
+- NEW: Widget anchors now have an option to be executed only when enabled, rather than every update.
+- FIX: UIWidget.SetRect will now work properly again.
+- FIX: Unity 4.0, 4.1 and 4.2 compile fix.
+
+3.5.4
+- NEW: You can now bake basic effects into bitmap fonts via inspector: soft shadow, soft outline, bevel, etc.
+- NEW: Added a way to set the Sorting Order on panels using Explicit Render Queues (for Unity 2D).
+- NEW: Cached buffers are now per-draw call rather than global, reducing memory allocations.
+- NEW: Added a "tall portrait mode" setting to the UIRoot that will shrink the UI if it's in portrait mode.
+- NEW: UIGrid and UITable now has the horizontal and vertical sorting options so drag & drop items can stay where you dropped them.
+- NEW: Got rid of all the old tutorial scenes and replaced them with some new ones.
+- NEW: Added a new experimental option to the UIRoot: "Adjust by DPI".
+- NEW: Bitmap Font creation now works on OSX as well.
+- FIX: You can now clear sprite states under UIButton.
+- FIX: TweenRotation now tweens X, Y and Z values individually, so you can go from 0 to 360 now.
+- FIX: OSX character keys resulted from arrow key presses will now be ignored by UIInput.
+- FIX: Fixed an issue with scrollviews being anchored to non-centered widgets.
+- FIX: Input selection and caret should now be affected by parent alpha properly.
+- FIX: Changing the slider value via small increments should now work as expected.
+- FIX: Transform inspector will now always display rotation in -180 to 180 range.
+- FIX: CSV parser now supports multi-line input without having to insert "\n".
+- FIX: A multi-line input field with a lot of spaces will now wrap correctly.
+- FIX: Keyboard and controller navigation should again highlight things properly.
+- FIX: Disabling a game object with a widget that was just enabled should no longer cause it to remain visible on rare occasions.
+- FIX: You can now assign sliders/progress bars for scroll view scroll bars.
+- FIX: Event delegate copy will now work for raw (code) delegates as well.
+- FIX: Modifying widget dimensions in inspector is now properly undoable.
+- FIX: Typewriter effect example script now supports encoded tags.
+- FIX: Went through all examples and fixed a few that were wonky.
+
+3.5.3
+- NEW: All sprite types can now be flipped, not just simple sprites.
+- NEW: Exposed On Change event in UIInput's inspector.
+- FIX: UIButton will no longer pixel snap the normal sprite by default, and pixel snap is now off by default.
 
 3.5.2
 - NEW: Added the ability to generate bitmap fonts from within Unity using FreeType directly.

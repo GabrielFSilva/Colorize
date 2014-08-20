@@ -47,7 +47,7 @@ public class UIButton : UIButtonColor
 	/// Whether the sprite changes will elicit a call to MakePixelPerfect() or not.
 	/// </summary>
 
-	public bool pixelSnap = true;
+	public bool pixelSnap = false;
 
 	/// <summary>
 	/// Click event listener.
@@ -69,18 +69,41 @@ public class UIButton : UIButtonColor
 		{
 			if (!enabled) return false;
 			Collider col = collider;
-			return col && col.enabled;
+			if (col && col.enabled) return true;
+#if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_1 && !UNITY_4_2
+			Collider2D c2d = GetComponent<Collider2D>();
+			return (c2d && c2d.enabled);
+#else
+			return false;
+#endif
 		}
 		set
 		{
-			Collider col = collider;
-
-			if (col != null)
+			if (isEnabled != value)
 			{
-				col.enabled = value;
-				SetState(value ? State.Normal : State.Disabled, false);
+				Collider col = collider;
+
+				if (col != null)
+				{
+					col.enabled = value;
+					SetState(value ? State.Normal : State.Disabled, false);
+				}
+#if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_1 && !UNITY_4_2
+				else
+				{
+					Collider2D c2d = GetComponent<Collider2D>();
+
+					if (c2d != null)
+					{
+						c2d.enabled = value;
+						SetState(value ? State.Normal : State.Disabled, false);
+					}
+					else enabled = value;
+				}
+#else
+				else enabled = value;
+#endif
 			}
-			else enabled = value;
 		}
 	}
 
@@ -97,8 +120,16 @@ public class UIButton : UIButtonColor
 		}
 		set
 		{
-			mNormalSprite = value;
-			if (mState == State.Normal) SetSprite(value);
+			if (mSprite != null && !string.IsNullOrEmpty(mNormalSprite) && mNormalSprite == mSprite.spriteName)
+			{
+				mNormalSprite = value;
+				SetSprite(value);
+			}
+			else
+			{
+				mNormalSprite = value;
+				if (mState == State.Normal) SetSprite(value);
+			}
 		}
 	}
 
@@ -163,7 +194,7 @@ public class UIButton : UIButtonColor
 
 	protected virtual void OnClick ()
 	{
-		if (isEnabled)
+		if (current == null && isEnabled)
 		{
 			current = this;
 			EventDelegate.Execute(onClick);
@@ -194,7 +225,7 @@ public class UIButton : UIButtonColor
 
 	protected void SetSprite (string sp)
 	{
-		if (mSprite != null && !string.IsNullOrEmpty(sp))
+		if (mSprite != null && !string.IsNullOrEmpty(sp) && mSprite.spriteName != sp)
 		{
 			mSprite.spriteName = sp;
 			if (pixelSnap) mSprite.MakePixelPerfect();

@@ -150,6 +150,7 @@ public class UIInput : MonoBehaviour
 	protected float mPosition = 0f;
 	protected bool mDoInit = true;
 	protected UIWidget.Pivot mPivot = UIWidget.Pivot.TopLeft;
+	protected bool mLoadSavedValue = true;
 
 	static protected int mDrawStart = 0;
 
@@ -162,6 +163,7 @@ public class UIInput : MonoBehaviour
 	protected UITexture mCaret = null;
 	protected Texture2D mBlankTex = null;
 	protected float mNextBlink = 0f;
+	protected float mLastAlpha = 0f;
 
 	static protected string mLastIME = "";
 #endif
@@ -226,6 +228,7 @@ public class UIInput : MonoBehaviour
 			if (mValue != value)
 			{
 				mValue = value;
+				mLoadSavedValue = false;
 				if (!isSelected) SaveToPlayerPrefs(value);
 				UpdateLabel();
 				ExecuteOnChange();
@@ -234,6 +237,7 @@ public class UIInput : MonoBehaviour
 			if (mValue != value)
 			{
 				mValue = value;
+				mLoadSavedValue = false;
 
 				if (isSelected)
 				{
@@ -277,14 +281,84 @@ public class UIInput : MonoBehaviour
 		}
 	}
 
+#if MOBILE
 	/// <summary>
 	/// Current position of the cursor.
 	/// </summary>
 
-#if MOBILE
-	protected int cursorPosition { get { return value.Length; } }
+	public int cursorPosition { get { return value.Length; } set {} }
+
+	/// <summary>
+	/// Index of the character where selection begins.
+	/// </summary>
+
+	public int selectionStart { get { return value.Length; } set {} }
+
+	/// <summary>
+	/// Index of the character where selection ends.
+	/// </summary>
+
+	public int selectionEnd { get { return value.Length; } set {} }
 #else
-	protected int cursorPosition { get { return isSelected ? mSelectionEnd : value.Length; } }
+	/// <summary>
+	/// Current position of the cursor.
+	/// </summary>
+
+	public int cursorPosition
+	{
+		get
+		{
+			return isSelected ? mSelectionEnd : value.Length;
+		}
+		set
+		{
+			if (isSelected)
+			{
+				mSelectionEnd = value;
+				UpdateLabel();
+			}
+		}
+	}
+
+	/// <summary>
+	/// Index of the character where selection begins.
+	/// </summary>
+
+	public int selectionStart
+	{
+		get
+		{
+			return isSelected ? mSelectionStart : value.Length;
+		}
+		set
+		{
+			if (isSelected)
+			{
+				mSelectionStart = value;
+				UpdateLabel();
+			}
+		}
+	}
+
+	/// <summary>
+	/// Index of the character where selection ends.
+	/// </summary>
+
+	public int selectionEnd
+	{
+		get
+		{
+			return isSelected ? mSelectionEnd : value.Length;
+		}
+		set
+		{
+			if (isSelected)
+			{
+				mSelectionEnd = value;
+				UpdateLabel();
+			}
+		}
+	}
 #endif
 
 	/// <summary>
@@ -316,11 +390,7 @@ public class UIInput : MonoBehaviour
 
 	void Start ()
 	{
-		if (string.IsNullOrEmpty(mValue))
-		{
-			if (!string.IsNullOrEmpty(savedAs) && PlayerPrefs.HasKey(savedAs))
-				value = PlayerPrefs.GetString(savedAs);
-		}
+		if (mLoadSavedValue) LoadValue();
 		else value = mValue.Replace("\\n", "\n");
 	}
 
@@ -512,7 +582,15 @@ public class UIInput : MonoBehaviour
 				for (int i = 0; i < s.Length; ++i)
 				{
 					char ch = s[i];
-					if (ch >= ' ') Insert(ch.ToString());
+					if (ch < ' ') continue;
+
+					// OSX inserts these characters for arrow keys
+					if (ch == '\uF700') continue;
+					if (ch == '\uF701') continue;
+					if (ch == '\uF702') continue;
+					if (ch == '\uF703') continue;
+
+					Insert(ch.ToString());
 				}
 			}
 
@@ -531,6 +609,11 @@ public class UIInput : MonoBehaviour
 				mNextBlink = RealTime.time + 0.5f;
 				mCaret.enabled = !mCaret.enabled;
 			}
+
+			// If the label's final alpha changes, we need to update the drawn geometry,
+			// or the highlight widgets (which have their geometry set manually) won't update.
+			if (isSelected && mLastAlpha != label.finalAlpha)
+				UpdateLabel();
 		}
 	}
 
@@ -756,7 +839,7 @@ public class UIInput : MonoBehaviour
 			{
 				ev.Use();
 				
-				if (label.multiLine && !ctrl && label.overflowMethod != UILabel.Overflow.ClampContent)
+				if (label.multiLine && !ctrl && label.overflowMethod != UILabel.Overflow.ClampContent && validation == Validation.None)
 				{
 					Insert("\n");
 				}
@@ -910,17 +993,8 @@ public class UIInput : MonoBehaviour
 
 	protected virtual void Cleanup ()
 	{
-		if (mHighlight)
-		{
-			NGUITools.Destroy(mHighlight.gameObject);
-			mHighlight = null;
-		}
-
-		if (mCaret)
-		{
-			NGUITools.Destroy(mCaret.gameObject);
-			mCaret = null;
-		}
+		if (mHighlight) mHighlight.enabled = false;
+		if (mCaret) mCaret.enabled = false;
 
 		if (mBlankTex)
 		{
@@ -938,11 +1012,15 @@ public class UIInput : MonoBehaviour
 	{
 		if (NGUITools.GetActive(this))
 		{
-			current = this;
 			mValue = value;
-			EventDelegate.Execute(onSubmit);
+
+			if (current == null)
+			{
+				current = this;
+				EventDelegate.Execute(onSubmit);
+				current = null;
+			}
 			SaveToPlayerPrefs(mValue);
-			current = null;
 		}
 	}
 
@@ -971,7 +1049,13 @@ public class UIInput : MonoBehaviour
 				if (inputType == InputType.Password)
 				{
 					processed = "";
-					for (int i = 0, imax = fullText.Length; i < imax; ++i) processed += "*";
+
+					string asterisk = "*";
+
+					if (label.bitmapFont != null && label.bitmapFont.bmFont != null &&
+						label.bitmapFont.bmFont.GetGlyph('*') == null) asterisk = "x";
+
+					for (int i = 0, imax = fullText.Length; i < imax; ++i) processed += asterisk;
 				}
 				else processed = fullText;
 
@@ -1060,7 +1144,9 @@ public class UIInput : MonoBehaviour
 					else
 					{
 						mHighlight.pivot = label.pivot;
+						mHighlight.mainTexture = mBlankTex;
 						mHighlight.MarkAsChanged();
+						mHighlight.enabled = true;
 					}
 				}
 
@@ -1077,11 +1163,11 @@ public class UIInput : MonoBehaviour
 				else
 				{
 					mCaret.pivot = label.pivot;
+					mCaret.mainTexture = mBlankTex;
 					mCaret.MarkAsChanged();
 					mCaret.enabled = true;
 				}
 
-				// Fill the selection
 				if (start != end)
 				{
 					label.PrintOverlay(start, end, mCaret.geometry, mHighlight.geometry, caretColor, selectionColor);
@@ -1095,6 +1181,7 @@ public class UIInput : MonoBehaviour
 
 				// Reset the blinking time
 				mNextBlink = RealTime.time + 0.5f;
+				mLastAlpha = label.finalAlpha;
 			}
 			else Cleanup();
 #endif
@@ -1206,11 +1293,33 @@ public class UIInput : MonoBehaviour
 
 	protected void ExecuteOnChange ()
 	{
-		if (EventDelegate.IsValid(onChange))
+		if (current == null && EventDelegate.IsValid(onChange))
 		{
 			current = this;
 			EventDelegate.Execute(onChange);
 			current = null;
 		}
+	}
+
+	/// <summary>
+	/// Convenience function to be used as a callback that will clear the input field's focus.
+	/// </summary>
+
+	public void RemoveFocus () { isSelected = false; }
+
+	/// <summary>
+	/// Convenience function that can be used as a callback for On Change notification.
+	/// </summary>
+
+	public void SaveValue () { SaveToPlayerPrefs(mValue); }
+
+	/// <summary>
+	/// Convenience function that can forcefully reset the input field's value to what was saved earlier.
+	/// </summary>
+
+	public void LoadValue ()
+	{
+		if (!string.IsNullOrEmpty(savedAs) && PlayerPrefs.HasKey(savedAs))
+			value = PlayerPrefs.GetString(savedAs);
 	}
 }

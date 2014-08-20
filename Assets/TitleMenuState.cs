@@ -4,6 +4,8 @@ using System.Collections;
 public class TitleMenuState : MonoBehaviour 
 {
 	public GFSCustomButton optionsButton;
+	public GFSCustomButton infoButton;
+	public GFSCustomButton playButton;
 	void Start () 
 	{
 		
@@ -11,10 +13,14 @@ public class TitleMenuState : MonoBehaviour
 	void OnEnable()
 	{
 		optionsButton.onClick += optionsButtonClicked;
+		infoButton.onClick += infoButtonClicked;
+		playButton.onClick += playButtonClicked;
 	}
 	void OnDisable()
 	{
 		optionsButton.onClick -= optionsButtonClicked;
+		infoButton.onClick -= infoButtonClicked;
+		playButton.onClick -= playButtonClicked;
 	}
 	void Update () 
 	{
@@ -24,5 +30,15 @@ public class TitleMenuState : MonoBehaviour
 	{
 		Debug.Log ("Options Clicked");
 		gameObject.transform.parent.GetComponent<MainMenuSceneManager> ().ChangeToState(MainMenuSceneManager.MainMenuStates.OPTIONS);
+	}
+	void infoButtonClicked(string p_name)
+	{
+		Debug.Log ("Info Clicked");
+		gameObject.transform.parent.GetComponent<MainMenuSceneManager> ().ChangeToState(MainMenuSceneManager.MainMenuStates.INFO);
+	}
+	void playButtonClicked(string p_name)
+	{
+		Debug.Log ("Play Clicked");
+		gameObject.transform.parent.GetComponent<MainMenuSceneManager> ().ChangeToState(MainMenuSceneManager.MainMenuStates.CHAPTER_SELECT);
 	}
 }
