@@ -22,7 +22,6 @@ public class OptionMenuState : MonoBehaviour
 
 	void returnButtonClicked (string p_name)
 	{
-		Debug.Log ("Return Clicked");
 		transform.parent.GetComponent<MainMenuSceneManager> ().ChangeToState (MainMenuSceneManager.MainMenuStates.TITLE);
 	}
 }

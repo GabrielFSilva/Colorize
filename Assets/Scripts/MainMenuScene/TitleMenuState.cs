@@ -28,17 +28,14 @@ public class TitleMenuState : MonoBehaviour
 
 	void optionsButtonClicked(string p_name)
 	{
-		Debug.Log ("Options Clicked");
 		gameObject.transform.parent.GetComponent<MainMenuSceneManager> ().ChangeToState(MainMenuSceneManager.MainMenuStates.OPTIONS);
 	}
 	void infoButtonClicked(string p_name)
 	{
-		Debug.Log ("Info Clicked");
 		gameObject.transform.parent.GetComponent<MainMenuSceneManager> ().ChangeToState(MainMenuSceneManager.MainMenuStates.INFO);
 	}
 	void playButtonClicked(string p_name)
 	{
-		Debug.Log ("Play Clicked");
 		gameObject.transform.parent.GetComponent<MainMenuSceneManager> ().ChangeToState(MainMenuSceneManager.MainMenuStates.CHAPTER_SELECT);
 	}
 }

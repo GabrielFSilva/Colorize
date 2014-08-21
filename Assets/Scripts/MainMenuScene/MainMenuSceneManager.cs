@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class MainMenuSceneManager : MonoBehaviour 
 {
+	public static int selectedChapter = 1;
+	public static int selectedStage = 1;
+
 	public enum MainMenuStates
 	{
 		TITLE,
@@ -36,6 +39,7 @@ public class MainMenuSceneManager : MonoBehaviour
 	void OnEnable()
 	{
 		EnableObjects ();
+		ChaptersManager.GetInstance ();
 	}
 
 	public void ChangeToState (MainMenuStates p_futureState)
