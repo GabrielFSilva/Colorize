@@ -107,7 +107,7 @@ public class StageSelectMenuState : MonoBehaviour
 			__temp.GetComponent<GFSCustomButton>().onClick += StageButtonClicked;
 
 			//Check Completed Flag
-			if (__tempChapterDescriptor.stages[i].isCompleted)
+			if (__tempChapterDescriptor.stages[i].isCompleted && __tempChapterDescriptor.stages[i].isUnlocked)
 				__temp.transform.FindChild("CompletedFlag").gameObject.SetActive(true);
 			else
 				__temp.transform.FindChild("CompletedFlag").gameObject.SetActive(false);

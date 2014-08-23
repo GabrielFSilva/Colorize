@@ -105,7 +105,7 @@ public class ChapterSelectMenuState : MonoBehaviour
 			chapterSpritesList.Add(__temp.GetComponent<UISprite>());
 
 			//Completed Flag
-			if (__tempChapterList[i].isCompleted)
+			if (__tempChapterList[i].isCompleted && __tempChapterList[i].isUnlocked)
 				__temp.transform.FindChild("CompletedFlag").gameObject.SetActive(true);
 			else
 				__temp.transform.FindChild("CompletedFlag").gameObject.SetActive(false);
