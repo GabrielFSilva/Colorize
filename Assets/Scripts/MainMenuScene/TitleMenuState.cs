@@ -24,6 +24,7 @@ public class TitleMenuState : MonoBehaviour
 	}
 	void Update () 
 	{
+
 	}
 
 	void optionsButtonClicked(string p_name)
