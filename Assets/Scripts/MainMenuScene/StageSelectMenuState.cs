@@ -76,7 +76,7 @@ public class StageSelectMenuState : MonoBehaviour
 		{
 			Debug.Log ("Select Button. Stage " + _selectStage);
 			MainMenuSceneManager.selectedStage = _selectStage;
-			Application.LoadLevel ("IntroScene");
+			Application.LoadLevel ("InGameScene");
 		}
 		else
 		{

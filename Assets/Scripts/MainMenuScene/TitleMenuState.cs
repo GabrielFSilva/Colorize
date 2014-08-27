@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TitleMenuState : MonoBehaviour 
 {
 	public GFSCustomButton optionsButton;
 	public GFSCustomButton infoButton;
 	public GFSCustomButton playButton;
+
+	public List<Transform> transforms;
 	void Start () 
 	{
 		

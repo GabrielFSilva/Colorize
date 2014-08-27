@@ -1,56 +1,53 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
-public class MainMenuSceneManager : MonoBehaviour 
+public class InGameSceneManager : MonoBehaviour 
 {
+
 	public static int selectedChapter = 1;
 	public static int selectedStage = 1;
-
-	public enum MainMenuStates
+	
+	public enum InGameStates
 	{
-		TITLE,
-		OPTIONS,
-		INFO,
-		CHAPTER_SELECT,
-		STAGE_SELECT
+		LOADING,
+		GAME,
+		PAUSE
 	}
-
-	public MainMenuStates currentState = MainMenuStates.TITLE;
-
+	
+	public InGameStates currentState = InGameStates.LOADING;
+	
 	public List<GameObject> panelsList;
 	public List<GameObject> statesGOList;
 
-	public OptionMenuState optionMenuState;
-
-
+	
+	
 	// Use this for initialization
 	void Start () 
 	{
-		Debug.Log ("starting scene");
+		Debug.Log ("starting inGame scene");
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-
+		
 	}
-
+	
 	void OnEnable()
 	{
 		EnableObjects (currentState);
-		ChaptersManager.GetInstance ();
 	}
-
-	public void ChangeToState (MainMenuStates p_futureState)
+	
+	public void ChangeToState (InGameStates p_futureState)
 	{
 		if (currentState == p_futureState)
 			return;
 
 		EnableObjects (p_futureState);
 	}
-
-	void EnableObjects(MainMenuStates p_futureState)
+	
+	void EnableObjects(InGameStates p_futureState)
 	{
 		panelsList [(int)currentState].SetActive (false);
 		statesGOList [(int)currentState].SetActive (false);
