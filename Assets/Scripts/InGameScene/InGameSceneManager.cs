@@ -12,15 +12,15 @@ public class InGameSceneManager : MonoBehaviour
 	{
 		LOADING,
 		GAME,
-		PAUSE
+		PAUSE,
+		TUTORIAL,
+		FINISHED
 	}
 	
 	public InGameStates currentState = InGameStates.LOADING;
 	
 	public List<GameObject> panelsList;
 	public List<GameObject> statesGOList;
-
-	
 	
 	// Use this for initialization
 	void Start () 

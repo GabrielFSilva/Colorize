@@ -15,7 +15,6 @@ public class ChaptersManager
 		return _instance;
 	}
 	#endregion
-
 	public ChaptersList chaptersList;
 
 
@@ -91,7 +90,7 @@ public class ChaptersManager
 	}
 	private void LoadFromPlayerPrefs()
 	{
-		Debug.Log("Carregando!");
+		//Debug.Log("Carregando!");
 		for(int __chapterIndex = 0; __chapterIndex < chaptersList.chapters.Count; __chapterIndex ++)
 		{
 			chaptersList.chapters[__chapterIndex].isUnlocked = PlayerPrefs.GetInt("CHAPTER_" + __chapterIndex.ToString() + "_IS_UNLOCKED") > 0 ? true : false;

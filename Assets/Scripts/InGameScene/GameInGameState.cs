@@ -4,8 +4,10 @@ using System.Collections;
 public class GameInGameState : MonoBehaviour 
 {
 	// Use this for initialization
-	void Start () {
-	
+	void Start () 
+	{
+
+
 	}
 	
 	// Update is called once per frame

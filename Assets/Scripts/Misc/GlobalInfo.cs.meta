@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 149c5761572b2134f898e1655148efd1
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - lalaPrefab: {fileID: 100010, guid: 9dd81270ae3005f4abdb1be1c324ee98, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

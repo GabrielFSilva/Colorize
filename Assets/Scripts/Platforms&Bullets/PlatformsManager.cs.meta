@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 262ba00af3c0f85448d95728cab8e31c
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - platformSpritesPrebaf: {fileID: 100000, guid: 52a8cb5b70afc4b44bf8471bedf0b049,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
