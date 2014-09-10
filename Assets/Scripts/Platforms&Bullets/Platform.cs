@@ -13,7 +13,6 @@ public class Platform : MonoBehaviour
 
 		if (spriteRenderer == null)
 			spriteRenderer = GetComponent<SpriteRenderer>();
-		Debug.Log (name);
 
 		UpdatePlatformType ();
 	}

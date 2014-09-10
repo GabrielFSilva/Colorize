@@ -6,17 +6,21 @@ public class Bullet : MonoBehaviour
 	public GlobalInfo.ShootTypes bulletType;
 	public SpriteRenderer spriteRenderer;
 
+	public float yDeath;
+
 	void Start () 
 	{
 		if (spriteRenderer == null)
 			spriteRenderer = GetComponent<SpriteRenderer>();
-		Debug.Log (name);
 		
 		UpdateBulletType ();
+		transform.rigidbody2D.AddRelativeForce (Vector2.right * 300f);
 	}
 
 	void Update () 
 	{
+		if (transform.position.y < yDeath)
+			Destroy(gameObject);
 	}
 	
 	void OnMouseDown()
@@ -29,8 +33,8 @@ public class Bullet : MonoBehaviour
 	{
 		spriteRenderer.sprite = BulletsManager.GetInstance ().GetBulletSpritesSprite (bulletType);
 	}
-
-	void OnCollisionEnter2D(Collision2D p_coll) 
+	
+	void OnTriggerEnter2D(Collider2D p_coll) 
 	{
 		if (p_coll.gameObject.name == "Platform")
 		{

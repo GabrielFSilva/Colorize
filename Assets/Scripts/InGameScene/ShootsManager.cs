@@ -2,8 +2,14 @@
 using UnityEngine;
 using System.Collections;
 
-public class ShootTypeGUIManager : MonoBehaviour 
+public class ShootsManager : MonoBehaviour 
 {
+	//player reference
+	public Player player;
+
+	//Sprites names
+	public List<string> buttonSpriteNamesList;
+
 	//Buttons instance info
 	public GameObject shootTypeButtonPrefab;
 	public Transform shootTypeBaseTransform;
@@ -15,10 +21,7 @@ public class ShootTypeGUIManager : MonoBehaviour
 	public List<UISprite> 					selectedButtonIconsList;
 	public List<UILabel> 					ammoLabelsList;
 	public List<GFSCustomButton> 			shootTypeButtonsList;
-
-	//Sprites names
-	public List<string> buttonSpriteNamesList;
-
+	
 	//Shoots info
 	public List<GlobalInfo.ShootTypes> 		shootTypesList;
 	public List<int> 						shootAmmoList;
@@ -93,6 +96,10 @@ public class ShootTypeGUIManager : MonoBehaviour
 		selectedButton = int.Parse(p_name);
 		selectedShootType = shootTypesList [selectedButton];
 		UpdateSelectedIconSprites ();
+
+		if (player == null)
+			player = GameObject.Find ("Player").GetComponent<Player>();
+		player.shootType = selectedShootType;
 	}
 }
 
