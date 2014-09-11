@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class BulletSprites : MonoBehaviour 
+public class ShootSprites : MonoBehaviour 
 {
 	public List<Sprite> sprites;
 }

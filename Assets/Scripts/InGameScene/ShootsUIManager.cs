@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class ShootsManager : MonoBehaviour 
+public class ShootsUIManager : MonoBehaviour 
 {
 	//player reference
 	public Player player;
