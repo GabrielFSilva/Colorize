@@ -3,8 +3,9 @@ using System.Collections;
 
 public class Shoot: MonoBehaviour 
 {
-	public GlobalInfo.ShootTypes shootType;
-	public SpriteRenderer spriteRenderer;
+	public GlobalInfo.ShootTypes 	shootType;
+	public SpriteRenderer 			spriteRenderer;
+	public Player 					playerReference;
 
 	public float yDeath;
 
@@ -41,7 +42,14 @@ public class Shoot: MonoBehaviour
 		//if it collides with a platform
 		if (p_coll.gameObject.name == "Platform")
 		{
-			p_coll.gameObject.GetComponent<Platform>().ChangePlatformType((GlobalInfo.PlaformType)((int)shootType));
+			Platform __tempPlat = p_coll.gameObject.GetComponent<Platform>();
+
+			if (__tempPlat.platformType == GlobalInfo.PlaformType.BLACK)
+			{
+				if (shootType == GlobalInfo.ShootTypes.BLACK)
+					return;
+			}
+			__tempPlat.ChangePlatformType((GlobalInfo.PlaformType)((int)shootType));
 			Destroy (this.gameObject);
 		}
 	}

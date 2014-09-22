@@ -19,13 +19,12 @@ public class Platform : MonoBehaviour
 
 	void Update () 
 	{
-	
 	}
 
 	void OnMouseDown()
 	{
-		platformType = (GlobalInfo.PlaformType)Random.Range (0, 9);
-		UpdatePlatformType ();
+		//platformType = (GlobalInfo.PlaformType)Random.Range (0, 9);
+		//UpdatePlatformType ();
 	}
 
 	void ProcessPlatformType()
@@ -48,6 +47,12 @@ public class Platform : MonoBehaviour
 			return;
 
 		platformType = p_platType;
+
+		if (p_platType == GlobalInfo.PlaformType.BLACK)
+			collider2D.isTrigger = true;
+		else
+			collider2D.isTrigger = false;
+
 		UpdatePlatformType ();
 	}
 }

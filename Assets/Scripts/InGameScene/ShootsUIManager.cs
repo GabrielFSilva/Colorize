@@ -32,6 +32,11 @@ public class ShootsUIManager : MonoBehaviour
 
 	void OnEnable()
 	{
+		if (player == null)
+			player = GameObject.Find ("Player").GetComponent<Player>();
+
+		player.shootsUIManager = this;
+
 		//Load the ammo info from the ChapterManager
 		StageDescriptor __tempDescriptor = ChaptersManager.GetInstance ().chaptersList.chapters [MainMenuSceneManager.selectedChapter -1].stages [MainMenuSceneManager.selectedStage -1];
 		shootTypesList = __tempDescriptor.shootTypesList;
@@ -39,6 +44,7 @@ public class ShootsUIManager : MonoBehaviour
 		shootInfiniteAmmoList = __tempDescriptor.shootInfiniteAmmoList;
 
 		selectedShootType = shootTypesList [selectedButton];
+
 		//Update UI
 		CreateShootTypeButtons ();
 		UpdateSelectedIconSprites ();
@@ -100,6 +106,33 @@ public class ShootsUIManager : MonoBehaviour
 		if (player == null)
 			player = GameObject.Find ("Player").GetComponent<Player>();
 		player.shootType = selectedShootType;
+	}
+
+	public void DescreaseAmmo(GlobalInfo.ShootTypes p_shootType)
+	{
+		foreach(GlobalInfo.ShootTypes type in shootTypesList)
+		{
+			if (type == p_shootType)
+			{
+				int __index = shootTypesList.IndexOf(type);
+				if (!shootInfiniteAmmoList[__index])
+				{
+					shootAmmoList[__index]--;
+					UpdateAmmoLabels();
+				}
+			}
+
+		}
+	}
+
+	public int GetAmmo(GlobalInfo.ShootTypes p_shootType)
+	{
+		foreach(GlobalInfo.ShootTypes type in shootTypesList)
+		{
+			if (type == p_shootType)
+				return shootAmmoList[shootTypesList.IndexOf(type)];
+		}
+		return 0;
 	}
 }
 

@@ -5,6 +5,7 @@ public class MovementUIManager : MonoBehaviour
 {
 	public GFSCustomButton leftButton;
 	public GFSCustomButton rightButton;
+	public GFSCustomButton jumpButton;
 	public Player player;
 	// Use this for initialization
 	void Awake ()
@@ -19,14 +20,16 @@ public class MovementUIManager : MonoBehaviour
 	
 	void OnEnable()
 	{
-		leftButton.onPress += ArrowButtonClicked;
-		rightButton.onPress += ArrowButtonClicked;
+		leftButton.onPress += ArrowButtonPressed;
+		rightButton.onPress += ArrowButtonPressed;
+		jumpButton.onPress += ArrowButtonPressed;
 	}
 	
 	void OnDisable()
 	{
-		leftButton.onPress -= ArrowButtonClicked;
-		rightButton.onPress -= ArrowButtonClicked;
+		leftButton.onPress -= ArrowButtonPressed;
+		rightButton.onPress -= ArrowButtonPressed;
+		jumpButton.onPress -= ArrowButtonPressed;
 	}
 	
 	// Update is called once per frame
@@ -36,12 +39,14 @@ public class MovementUIManager : MonoBehaviour
 		
 	}
 	
-	void ArrowButtonClicked(bool p_pressed,string p_name)
+	void ArrowButtonPressed(bool p_pressed,string p_name)
 	{
 		if (p_name == "LeftArrow")
 			player.leftArrow = p_pressed;
 		else if (p_name == "RightArrow")
 			player.rightArrow = p_pressed;
+		else if (p_name == "UpArrow" && p_pressed)
+			player.Jump();
 	}
 
 }
