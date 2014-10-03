@@ -10,11 +10,11 @@ public class MovementUIManager : MonoBehaviour
 	// Use this for initialization
 	void Awake ()
 	{
-		player = GameObject.Find ("Player").GetComponent<Player> ();
+
 	}
 	void Start () 
 	{
-		
+		player = GameObject.Find ("Player").GetComponent<Player> ();
 		
 	}
 	

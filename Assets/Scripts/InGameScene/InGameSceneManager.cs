@@ -16,16 +16,21 @@ public class InGameSceneManager : MonoBehaviour
 		TUTORIAL,
 		FINISHED
 	}
-	
+
 	public InGameStates currentState = InGameStates.LOADING;
-	
-	public List<GameObject> panelsList;
-	public List<GameObject> statesGOList;
-	
+
+	public LevelLoader 				levelLoader;
+	public List<GameObject> 		panelsList;
+	public List<GameObject> 		statesGOList;
+
+	void Awake()
+	{
+		//levelLoader.LoadLevel ();
+	}
 	// Use this for initialization
 	void Start () 
 	{
-		Debug.Log ("starting inGame scene");
+		Debug.Log ("starting inGame scene. Stage " + selectedChapter + "-" + selectedStage);
 	}
 	
 	// Update is called once per frame

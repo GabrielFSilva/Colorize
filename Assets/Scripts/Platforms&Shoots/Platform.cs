@@ -4,6 +4,7 @@ using System.Collections;
 public class Platform : MonoBehaviour 
 {
 	public GlobalInfo.PlaformType platformType;
+	public GlobalInfo.PlaformType platformStartType;
 	public SpriteRenderer spriteRenderer;
 	public bool isLocked;
 
