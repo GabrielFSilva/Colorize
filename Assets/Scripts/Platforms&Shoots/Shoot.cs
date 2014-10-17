@@ -1,13 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class Shoot: MonoBehaviour 
 {
+	public event Action<Shoot> 		onDestroy;
 	public GlobalInfo.ShootTypes 	shootType;
 	public SpriteRenderer 			spriteRenderer;
 	public Player 					playerReference;
 
+
 	public float yDeath;
+
+	// Pause Variables
+	public bool 		isPaused = false;
+	public Vector2 		shootVelocity;
+	public float		shootAngularVelocity;
+
 
 	void Start () 
 	{
@@ -24,12 +33,17 @@ public class Shoot: MonoBehaviour
 
 	void Update () 
 	{
+		if (isPaused)
+			return;
 		//Rotate the shoot towards it's velocity direction
 		transform.rotation = Quaternion.AngleAxis (Mathf.Rad2Deg * Mathf.Atan2 (rigidbody2D.velocity.normalized.y,rigidbody2D.velocity.normalized.x), Vector3.forward);
 
 		//y death limit
 		if (transform.position.y < yDeath)
+		{
+			onDestroy(this);
 			Destroy(gameObject);
+		}
 	}
 	
 	void UpdateShootType ()
@@ -50,7 +64,27 @@ public class Shoot: MonoBehaviour
 					return;
 			}
 			__tempPlat.ChangePlatformType((GlobalInfo.PlaformType)((int)shootType));
+
+			onDestroy(this);
 			Destroy (this.gameObject);
 		}
+	}
+
+	public void PauseShoot(bool p_pause)
+	{
+		if (p_pause)
+		{
+			shootVelocity = rigidbody2D.velocity;
+			shootAngularVelocity = rigidbody2D.angularVelocity;
+			rigidbody2D.isKinematic = true;
+		}
+		else
+		{
+			rigidbody2D.isKinematic = false;
+			rigidbody2D.velocity = shootVelocity;
+			rigidbody2D.angularVelocity = shootAngularVelocity;
+		}
+		
+		isPaused = p_pause;
 	}
 }

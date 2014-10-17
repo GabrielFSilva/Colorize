@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Player : MonoBehaviour 
 {
@@ -23,6 +24,10 @@ public class Player : MonoBehaviour
 	public bool grounded = true;
 	private bool _groundedFlag = false;
 
+	public bool 		isPaused = false;
+	public Vector2 		playerVelocity;
+	public float		playerAngularVelocity;
+
 	//====================================================================//
 	//Buff Management Variables
 	//====================================================================//
@@ -41,6 +46,7 @@ public class Player : MonoBehaviour
 	//====================================================================//
 	//Shoots Management Variables
 	//====================================================================//
+	public List<Shoot> activeShootsList;
 	public GameObject shootPrefab;
 	public ShootsUIManager shootsUIManager;
 	public GlobalInfo.ShootTypes shootType = GlobalInfo.ShootTypes.RED;
@@ -53,7 +59,6 @@ public class Player : MonoBehaviour
 	}
 	void Start () 
 	{
-	
 	}
 	/// <summary>
 	/// the fixed update is used to apply forces and move the player's game object.
@@ -96,6 +101,9 @@ public class Player : MonoBehaviour
 		}
 		if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space))
 			Jump();
+
+		if (Input.GetKeyDown(KeyCode.P))
+			PausePlayer(!isPaused);
 	}
 
 	/// <summary>
@@ -128,6 +136,9 @@ public class Player : MonoBehaviour
 	/// </summary>
 	public void Jump()
 	{
+		if (isPaused)
+			return;
+
 		if (grounded)
 		{
 			if (_redBuffActive)
@@ -152,6 +163,9 @@ public class Player : MonoBehaviour
 	/// </summary>
 	void UpdateBuffs()
 	{
+		if (isPaused)
+			return;
+
 		if (_redBuffActive)
 		{
 			_redBuffTimer += Time.deltaTime;
@@ -178,6 +192,9 @@ public class Player : MonoBehaviour
 	/// <param name="p_platType">P_plat type.</param>
 	void PlatformCollision(GlobalInfo.PlaformType p_platType)
 	{
+		if (isPaused)
+			return;
+
 		if (p_platType == GlobalInfo.PlaformType.WHITE || p_platType == GlobalInfo.PlaformType.LOCKED_WHITE)
 		{
 			_groundedFlag = true;
@@ -215,6 +232,9 @@ public class Player : MonoBehaviour
 	/// </summary>
 	public void CreateShoot()
 	{
+		if (isPaused)
+			return;
+
 		if (shootsUIManager.GetAmmo(shootType) == 0)
 			return;
 
@@ -236,7 +256,33 @@ public class Player : MonoBehaviour
 		GameObject __tempShoot =  (GameObject)GameObject.Instantiate (shootPrefab, __shootPosition, Quaternion.AngleAxis(Mathf.Rad2Deg * __angle,Vector3.forward));
 		__tempShoot.GetComponent<Shoot> ().playerReference = this;
 		__tempShoot.GetComponent<Shoot> ().shootType = shootType;
+		__tempShoot.GetComponent<Shoot> ().onDestroy += delegate(Shoot obj) {
+			activeShootsList.Remove(obj);
+		};
+
+		activeShootsList.Add(__tempShoot.GetComponent<Shoot>());
 		
 
 	}
+
+	public void PausePlayer(bool p_willPause)
+	{
+		if (p_willPause)
+		{
+			playerVelocity = rigidbody2D.velocity;
+			playerAngularVelocity = rigidbody2D.angularVelocity;
+			rigidbody2D.isKinematic = true;
+		}
+		else
+		{
+			rigidbody2D.isKinematic = false;
+			rigidbody2D.velocity = playerVelocity;
+			rigidbody2D.angularVelocity = playerAngularVelocity;
+		}
+		foreach (Shoot shoot in activeShootsList)
+			shoot.PauseShoot(p_willPause);
+
+		isPaused = p_willPause;
+	}
+	
 }

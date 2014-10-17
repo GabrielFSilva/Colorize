@@ -74,7 +74,6 @@ public class StageSelectMenuState : MonoBehaviour
 	{
 		if (ChaptersManager.GetInstance ().chaptersList.chapters[MainMenuSceneManager.selectedChapter -1].stages[_selectStage -1].isUnlocked)
 		{
-			Debug.Log ("Select Button. Stage " + _selectStage);
 			MainMenuSceneManager.selectedStage = _selectStage;
 			Application.LoadLevel ("InGameScene");
 		}

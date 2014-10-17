@@ -53,6 +53,14 @@ public class ShootsUIManager : MonoBehaviour
 
 	void CreateShootTypeButtons ()
 	{
+		foreach (GameObject go in shootTypeGOList)
+			Destroy(go);
+
+		shootTypeGOList.Clear ();
+		ammoLabelsList.Clear ();
+		shootTypeButtonsList.Clear ();
+		selectedButtonIconsList.Clear ();
+
 		GameObject __tempButton;
 		for(int i = shootTypesList.Count; i >0; i--)
 		{

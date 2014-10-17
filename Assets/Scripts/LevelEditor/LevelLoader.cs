@@ -58,14 +58,15 @@ public class LevelLoader : MonoBehaviour
 			__tempPlat.platformStartType = __tempPlat.platformType;
 			__tempPlat.name = "Platform";
 
-			levelInfo.platformsList.Add(__tempPlat);
+			LevelInfo.platformsList.Add(__tempPlat);
 		}
 		XmlNode playerNode = xmlDoc.SelectSingleNode ("//Player");
-		levelInfo.playerSpawnPosition = new Vector3 (float.Parse (playerNode.Attributes ["x"].Value), float.Parse (playerNode.Attributes ["y"].Value), float.Parse (playerNode.Attributes ["z"].Value));
 
-		levelInfo.player = ((GameObject)Instantiate (playerPrefab)).GetComponent<Player> ();
-		levelInfo.player.name = "Player";
-		levelInfo.player.shootsUIManager = shootsUIManager;
+		LevelInfo.playerSpawnPosition = new Vector3 (float.Parse (playerNode.Attributes ["x"].Value), float.Parse (playerNode.Attributes ["y"].Value), float.Parse (playerNode.Attributes ["z"].Value));
+
+		LevelInfo.player = ((GameObject)Instantiate (playerPrefab)).GetComponent<Player> ();
+		LevelInfo.player.name = "Player";
+		LevelInfo.player.shootsUIManager = shootsUIManager;
 
 	}
 

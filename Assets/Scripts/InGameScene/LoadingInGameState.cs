@@ -9,22 +9,28 @@ public class LoadingInGameState : MonoBehaviour
 	private float _loadingLabelTimeCounter = 0f;
 	private int _loadingLabelState = 0;
 
+	public UITexture			fadeTexture;
+	
+	public float 	fadeDuration;
+	private bool	fadeActive = false;
+	private float	fadeTimeCount;
+
 	void Start () 
 	{
 		
 	}
 	void OnEnable()
 	{
+	
 		StartCoroutine (CoroutineTest ());
+		StartFade ();
 	}
-	IEnumerator CoroutineTest()
-	{
-		yield return new WaitForSeconds (5f);
-		gameObject.transform.parent.GetComponent<InGameSceneManager> ().ChangeToState(InGameSceneManager.InGameStates.GAME);
-	}
+
 	void OnDisable()
 	{
-
+		fadeActive = false;
+		fadeTimeCount = 0f;
+		fadeTexture.alpha = 0f;
 	}
 	void Update () 
 	{
@@ -32,6 +38,12 @@ public class LoadingInGameState : MonoBehaviour
 		_loadingLabelTimeCounter += Time.deltaTime * 1.3f;
 		if (_loadingLabelTimeCounter >= 1.0f)
 			UpdateLabelState();
+
+		if (fadeActive)
+		{
+			fadeTimeCount += Time.deltaTime/fadeDuration;
+			fadeTexture.alpha = 1f - fadeTimeCount;
+		}
 	}
 	private void UpdateLabelState()
 	{
@@ -56,5 +68,23 @@ public class LoadingInGameState : MonoBehaviour
 			loadingLabel.text = "Loading";
 		}
 		_loadingLabelTimeCounter = 0f;
+	}
+
+	void StartFade ()
+	{
+		fadeActive = true;
+		fadeTimeCount = 0.0f;
+		StartCoroutine (WaitFade ());
+	}
+	IEnumerator CoroutineTest()
+	{
+		yield return new WaitForSeconds (2f);
+		gameObject.transform.parent.GetComponent<InGameSceneManager> ().ChangeToState(InGameSceneManager.InGameStates.GAME);
+	}
+	IEnumerator WaitFade()
+	{
+		yield return new WaitForSeconds (fadeDuration);
+		fadeActive = false;
+
 	}
 }

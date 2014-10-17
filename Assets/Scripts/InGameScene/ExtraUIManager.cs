@@ -3,8 +3,12 @@ using System.Collections;
 
 public class ExtraUIManager : MonoBehaviour 
 {
-	public GFSCustomButton pauseButton;
-	public GFSCustomButton clickZone;
+	public InGameSceneManager	gameSceneManager;
+	public GFSCustomButton 		pauseButton;
+	public GFSCustomButton 		replayButton;
+	public GFSCustomButton 		clickZone;
+
+	public LevelInfo			levelInfo;
 
 	public Player player;
 
@@ -22,26 +26,30 @@ public class ExtraUIManager : MonoBehaviour
 	void OnEnable()
 	{
 		pauseButton.onClick += PauseButtonClicked;
+		replayButton.onClick += ReplayButtonClicked;
 		clickZone.onPress += ClickZonePressed;
 	}
 
 	void OnDisable()
 	{
 		pauseButton.onClick -= PauseButtonClicked;
+		replayButton.onClick -= ReplayButtonClicked;
 		clickZone.onPress -= ClickZonePressed;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
-		
+	void Update () 
+	{
 	}
 	
 	void PauseButtonClicked(string p_name)
 	{
-		Debug.Log ("Pause");
+		gameSceneManager.ChangeToState(InGameSceneManager.InGameStates.PAUSE);
 	}
-
+	void ReplayButtonClicked(string p_name)
+	{
+		levelInfo.RestartStage ();
+	}
 	void ClickZonePressed(bool p_pressed,string p_name)
 	{
 		if (p_pressed)
