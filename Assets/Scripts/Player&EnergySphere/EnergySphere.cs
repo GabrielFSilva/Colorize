@@ -9,9 +9,11 @@ public class EnergySphere : MonoBehaviour
 	public float 			movementSpeed;
 	private float 			timeCount;
 
-	public InGameSceneManager	gameSceneManager;
+	public InGameSceneManager		gameSceneManager;
 
-	public bool 			isPaused = false;
+	public bool 					isPaused = false;
+
+	public GlobalInfo.ShootTypes	sphereType;
 
 	void Start () 
 	{

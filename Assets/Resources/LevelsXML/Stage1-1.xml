@@ -1,0 +1,28 @@
+<Level>
+  <Platforms>
+    <Platform x="2.5" y="-0.5" z="0" type="0" tuto="0" />
+    <Platform x="-5.5" y="-0.5000002" z="0" type="0" tuto="0" />
+    <Platform x="-1.5" y="3" z="0" type="0" tuto="0" />
+    <Platform x="-3.5" y="-0.5" z="0" type="0" tuto="1" />
+    <Platform x="-0.5" y="-0.5" z="0" type="0" tuto="0" />
+    <Platform x="-9.499995" y="-0.5" z="0" type="0" tuto="0" />
+    <Platform x="-2.5" y="-0.5" z="0" type="0" tuto="1" />
+    <Platform x="3.500023" y="-0.5000005" z="0" type="0" tuto="0" />
+    <Platform x="-0.5" y="3" z="0" type="0" tuto="0" />
+    <Platform x="-2.5" y="3" z="0" type="0" tuto="0" />
+    <Platform x="-7.499995" y="-0.5000002" z="0" type="0" tuto="0" />
+    <Platform x="0.5" y="-0.5" z="0" type="0" tuto="0" />
+    <Platform x="-4.5" y="-0.5" z="0" type="0" tuto="1" />
+    <Platform x="4.500021" y="-0.5000005" z="0" type="0" tuto="0" />
+    <Platform x="-6.499999" y="-0.5000002" z="0" type="0" tuto="0" />
+    <Platform x="-1.5" y="-0.5" z="0" type="0" tuto="0" />
+    <Platform x="5.500013" y="-0.5000005" z="0" type="0" tuto="0" />
+    <Platform x="-8.499999" y="-0.5" z="0" type="0" tuto="0" />
+    <Platform x="1.5" y="-0.5" z="0" type="0" tuto="0" />
+  </Platforms>
+  <TutorialTriggers>
+    <TutorialTrigger x="-5.5" y="1.473924" z="0" index="1" colliderY="8" />
+  </TutorialTriggers>
+  <EnergySphere x="2" y="1" z="0" type="0" />
+  <Player x="-8.5" y="1.004976" z="0" />
+</Level>

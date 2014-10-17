@@ -38,11 +38,11 @@ public class LevelEditorManager : MonoBehaviour {
 		List<Platform> __platformsList = new List<Platform>(GameObject.FindObjectsOfType<Platform>());
 		Transform __playerTransfom = GameObject.Find("Player").transform;
 		List<TutorialTrigger>  __tutorialTriggersList = new List<TutorialTrigger>(GameObject.FindObjectsOfType<TutorialTrigger>());
-		
+
 		EnergySphere __energySphere = GameObject.Find ("EnergySphere").GetComponent<EnergySphere> ();
-		string filepath = Application.dataPath + "/LevelsXML/Stage" + chapterIndex.ToString() + "-" + stageIndex.ToString() + ".xml";
-		
-		//Delete a file that contains the same name
+		string filepath = Application.dataPath + "/Resources/LevelsXML/Stage" + chapterIndex.ToString() + "-" + stageIndex.ToString() + ".xml";
+		//string filepath = "C:/Users/Pelôn/Desktop/Lala/Stage" + chapterIndex.ToString() + "-" + stageIndex.ToString() + ".xml";
+			//Delete a file that contains the same name
 		if (File.Exists(filepath))
 			File.Delete(filepath);
 		
@@ -50,7 +50,6 @@ public class LevelEditorManager : MonoBehaviour {
 		{
 			//Create de xml file
 			XmlDocument xmlDoc = new XmlDocument();
-			
 			//Set the root node
 			XmlNode rootNode = xmlDoc.CreateElement("Level");
 			xmlDoc.AppendChild(rootNode);
@@ -68,21 +67,24 @@ public class LevelEditorManager : MonoBehaviour {
 				XmlAttribute platformY = xmlDoc.CreateAttribute("y");
 				XmlAttribute platformZ = xmlDoc.CreateAttribute("z");
 				XmlAttribute platformType = xmlDoc.CreateAttribute("type");
-				
+				XmlAttribute platformTutorialFocus = xmlDoc.CreateAttribute("tuto");
+
 				platformX.Value = plat.transform.position.x.ToString();
 				platformY.Value = plat.transform.position.y.ToString();
 				platformZ.Value = plat.transform.position.z.ToString();
 				platformType.Value = ((int)plat.platformType).ToString();
+				platformTutorialFocus.Value = plat.tutorialFocusIndex.ToString();
 				
 				platNode.Attributes.Append(platformX);
 				platNode.Attributes.Append(platformY);
 				platNode.Attributes.Append(platformZ);
 				platNode.Attributes.Append(platformType);
-				
+				platNode.Attributes.Append(platformTutorialFocus);
+
 				platformsNode.AppendChild(platNode);
 			}
 			
-			/*XmlNode tutorialTriggersNode = xmlDoc.CreateElement("TutorialTriggers");
+			XmlNode tutorialTriggersNode = xmlDoc.CreateElement("TutorialTriggers");
 			rootNode.AppendChild(tutorialTriggersNode);
 
 			foreach (TutorialTrigger trigger in __tutorialTriggersList)
@@ -92,16 +94,44 @@ public class LevelEditorManager : MonoBehaviour {
 				XmlAttribute triggerPosX = xmlDoc.CreateAttribute("x");
 				XmlAttribute triggerPosY = xmlDoc.CreateAttribute("y");
 				XmlAttribute triggerPosZ = xmlDoc.CreateAttribute("z");
+				XmlAttribute triggerIndex = xmlDoc.CreateAttribute("index");
 				XmlAttribute triggerColliderY = xmlDoc.CreateAttribute("colliderY");
 
 				triggerPosX.Value = trigger.transform.position.x.ToString();
 				triggerPosY.Value = trigger.transform.position.y.ToString();
 				triggerPosZ.Value = trigger.transform.position.z.ToString();
+				triggerIndex.Value = trigger.tutorialIndex.ToString();
 				triggerColliderY.Value = trigger.GetComponent<BoxCollider2D>().size.y.ToString();
 
+				triggerNode.Attributes.Append(triggerPosX);
+				triggerNode.Attributes.Append(triggerPosY);
+				triggerNode.Attributes.Append(triggerPosZ);
+				triggerNode.Attributes.Append(triggerIndex);
+				triggerNode.Attributes.Append(triggerColliderY);
+
+
 				tutorialTriggersNode.AppendChild(triggerNode);
-			}*/
-			
+			}
+			//Save the Energy Sphere info
+			XmlNode energySphereNode = xmlDoc.CreateElement("EnergySphere");
+
+			XmlAttribute xEnergySphere = xmlDoc.CreateAttribute("x");
+			XmlAttribute yEnergySphere = xmlDoc.CreateAttribute("y");
+			XmlAttribute zEnergySphere = xmlDoc.CreateAttribute("z");
+			XmlAttribute typeEnergySphere = xmlDoc.CreateAttribute("type");
+
+			xEnergySphere.Value = __energySphere.transform.position.x.ToString();
+			yEnergySphere.Value = __energySphere.transform.position.y.ToString();
+			zEnergySphere.Value = __energySphere.transform.position.z.ToString();
+			typeEnergySphere.Value = ((int)__energySphere.sphereType).ToString();
+
+			energySphereNode.Attributes.Append(xEnergySphere);
+			energySphereNode.Attributes.Append(yEnergySphere);
+			energySphereNode.Attributes.Append(zEnergySphere);
+			energySphereNode.Attributes.Append(typeEnergySphere);
+
+			rootNode.AppendChild(energySphereNode);
+
 			//Save the player info - spawnPoint
 			XmlNode playerNode = xmlDoc.CreateElement("Player");
 			
@@ -120,7 +150,7 @@ public class LevelEditorManager : MonoBehaviour {
 			rootNode.AppendChild(playerNode);
 			
 			//Save the xml file
-			xmlDoc.Save(filepath);
+			xmlDoc.Save(fs);
 			
 		}
 	}
