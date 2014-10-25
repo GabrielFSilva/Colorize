@@ -4,19 +4,33 @@ using System.Collections;
 public class TutorialManager : MonoBehaviour 
 {
 	public InGameSceneManager		gameSceneManager;
+	public ShootsUIManager			shootUIManager;
+	public PlayerCamera				playerCamera;
 	public bool 					isOnTutorialMode = false;
-	public int 						currentTutorialIndex;
 
+	public static int					currentTutorialIndex;
+	public static float					currentTutorialDuration;
+	public static Vector3				currentTutorialCameraPosition;
 
-	public void ChangeTutorialMode(bool p_tutorialMode,int p_tutorialIndex, float p_tutorialDuration)
+	public void ChangeTutorialMode(bool p_tutorialMode)
 	{
-		currentTutorialIndex = p_tutorialIndex;
 		isOnTutorialMode = p_tutorialMode;
 		foreach (Platform platform in LevelInfo.platformsList)
-			platform.TutorialMode (p_tutorialMode, p_tutorialIndex);
+			platform.TutorialMode (p_tutorialMode, currentTutorialIndex);
+
+		shootUIManager.TutorialMode (p_tutorialMode, currentTutorialIndex);
 
 		if (p_tutorialMode)
-			StartCoroutine (TutorialWait (p_tutorialDuration));
+		{
+			playerCamera.tutorialModePosition = currentTutorialCameraPosition;
+			playerCamera.cameraState = PlayerCamera.CameraState.TUTORIAL_MODE;
+			LevelInfo.player.ResetVelocity();
+			StartCoroutine (TutorialWait (currentTutorialDuration));
+		}
+		else
+		{
+			playerCamera.cameraState = PlayerCamera.CameraState.FOLLOWING_PLAYER;
+		}
 	}
 
 	IEnumerator TutorialWait(float p_waitDuration)

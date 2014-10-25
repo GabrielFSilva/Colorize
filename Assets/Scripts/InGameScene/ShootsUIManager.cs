@@ -20,15 +20,19 @@ public class ShootsUIManager : MonoBehaviour
 	public List<GameObject> 				shootTypeGOList;
 	public List<UISprite> 					selectedButtonIconsList;
 	public List<UILabel> 					ammoLabelsList;
+	public List<UITexture>					shootTutorialFocusSpriteList;
 	public List<GFSCustomButton> 			shootTypeButtonsList;
 	
 	//Shoots info
 	public List<GlobalInfo.ShootTypes> 		shootTypesList;
 	public List<int> 						shootAmmoList;
 	public List<bool>						shootInfiniteAmmoList;
+	public List<int>						shootTutorialFocus;
 	
 	public int 								selectedButton = 0;
 	public GlobalInfo.ShootTypes 			selectedShootType;
+
+	public bool								onTutorialMode = false;
 
 	void OnEnable()
 	{
@@ -38,18 +42,24 @@ public class ShootsUIManager : MonoBehaviour
 		player.shootsUIManager = this;
 
 		//Load the ammo info from the ChapterManager
-		StageDescriptor __tempDescriptor = ChaptersManager.GetInstance ().chaptersList.chapters [MainMenuSceneManager.selectedChapter -1].stages [MainMenuSceneManager.selectedStage -1];
-		shootTypesList = __tempDescriptor.shootTypesList;
-		shootAmmoList = __tempDescriptor.shootAmmoList;
-		shootInfiniteAmmoList = __tempDescriptor.shootInfiniteAmmoList;
-
-		selectedShootType = shootTypesList [selectedButton];
+		if (Application.loadedLevelName == "LevelEditor")
+		{
+			StageDescriptor __tempDescriptor = ChaptersManager.GetInstance ().chaptersList.chapters [MainMenuSceneManager.selectedChapter -1].stages [MainMenuSceneManager.selectedStage -1];
+			shootTypesList = __tempDescriptor.shootTypesList;
+			shootAmmoList = __tempDescriptor.shootAmmoList;
+			shootInfiniteAmmoList = __tempDescriptor.shootInfiniteAmmoList;
+			shootTutorialFocus = __tempDescriptor.shootTutorialFocus;
+			
+			selectedShootType = shootTypesList [selectedButton];
+		}
 
 		//Update UI
 		CreateShootTypeButtons ();
 		UpdateSelectedIconSprites ();
 		UpdateAmmoLabels ();
 	}
+
+
 
 	void CreateShootTypeButtons ()
 	{
@@ -60,6 +70,7 @@ public class ShootsUIManager : MonoBehaviour
 		ammoLabelsList.Clear ();
 		shootTypeButtonsList.Clear ();
 		selectedButtonIconsList.Clear ();
+		shootTutorialFocusSpriteList.Clear ();
 
 		GameObject __tempButton;
 		for(int i = shootTypesList.Count; i >0; i--)
@@ -78,6 +89,7 @@ public class ShootsUIManager : MonoBehaviour
 			shootTypeGOList.Add(__tempButton);
 			selectedButtonIconsList.Add((__tempButton.transform.FindChild("SelectedIconSprite")).GetComponent<UISprite>());
 			ammoLabelsList.Add((__tempButton.transform.FindChild("AmmoLabel")).GetComponent<UILabel>());
+			shootTutorialFocusSpriteList.Add((__tempButton.transform.FindChild("FocusTexture")).GetComponent<UITexture>());
 			shootTypeButtonsList.Add(__tempButton.GetComponent<GFSCustomButton>());
 			shootTypeButtonsList[shootTypesList.Count-i].onClick += ShootTypeButtonClicked;
 		}
@@ -107,6 +119,9 @@ public class ShootsUIManager : MonoBehaviour
 
 	void ShootTypeButtonClicked(string p_name)
 	{
+		if (onTutorialMode)
+			return;
+
 		selectedButton = int.Parse(p_name);
 		selectedShootType = shootTypesList [selectedButton];
 		UpdateSelectedIconSprites ();
@@ -138,9 +153,54 @@ public class ShootsUIManager : MonoBehaviour
 		foreach(GlobalInfo.ShootTypes type in shootTypesList)
 		{
 			if (type == p_shootType)
-				return shootAmmoList[shootTypesList.IndexOf(type)];
+			{
+				if (shootInfiniteAmmoList[shootTypesList.IndexOf(type)])
+					return 1;
+				else
+					return shootAmmoList[shootTypesList.IndexOf(type)];
+			}
 		}
 		return 0;
+	}
+
+	public void TutorialMode(bool p_willEnterOnTutorial, int p_tutorialIndex)
+	{
+		onTutorialMode = p_willEnterOnTutorial;
+		//Entering Tutorial Mode
+		if (p_willEnterOnTutorial)
+		{
+
+			for(int i = 0; i < shootTutorialFocus.Count; i ++)
+			{
+				//Is on focus during tutorial
+				if (p_tutorialIndex == shootTutorialFocus[i])
+				{
+					shootTypeButtonsList[i].GetComponent<UISprite>().color = Color.white;
+					shootTutorialFocusSpriteList[i].gameObject.SetActive(true);
+					
+				}
+				//Isn't in focus
+				else
+				{
+					shootTypeButtonsList[i].GetComponent<UISprite>().color = Color.gray;
+					shootTutorialFocusSpriteList[i].gameObject.SetActive(false);
+
+				}
+				selectedButtonIconsList[i].gameObject.SetActive(false);
+			}
+		}
+		//Leaving Tutorial Mode
+		else
+		{
+			for(int i = 0; i < shootTutorialFocus.Count; i ++)
+			{
+				shootTypeButtonsList[i].GetComponent<UISprite>().color = Color.white;
+				shootTutorialFocusSpriteList[i].gameObject.SetActive(false);
+			}
+			UpdateSelectedIconSprites();
+		}
+
+		
 	}
 }
 

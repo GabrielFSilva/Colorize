@@ -12,4 +12,5 @@ public class StageDescriptor : MonoBehaviour
 	public List<GlobalInfo.ShootTypes> 		shootTypesList;
 	public List<int> 						shootAmmoList;
 	public List<bool>						shootInfiniteAmmoList;
+	public List<int>						shootTutorialFocus;
 }

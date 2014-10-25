@@ -4,11 +4,13 @@ using System.Collections.Generic;
 
 public class LevelInfo : MonoBehaviour 
 {
-	public static List<Platform> 		platformsList;
+	public static PlayerCamera					playerCamera;
+
+	public static List<Platform> 		platformsList = new List<Platform>();
 	public static Player				player;
 	public static Vector3				playerSpawnPosition;
 
-	public static List<TutorialTrigger>	tutorialTriggersList;
+	public static List<TutorialTrigger>	tutorialTriggersList = new List<TutorialTrigger>();
 
 	public static EnergySphere			energySphere;
 
@@ -31,6 +33,7 @@ public class LevelInfo : MonoBehaviour
 
 	public void RestartStage()
 	{
+		playerCamera.cameraState = PlayerCamera.CameraState.FOLLOWING_PLAYER;
 		player.transform.position = playerSpawnPosition;
 		player.rigidbody2D.isKinematic = true;
 		player.rigidbody2D.isKinematic = false;
@@ -39,6 +42,6 @@ public class LevelInfo : MonoBehaviour
 			plat.ChangePlatformType (plat.platformStartType);
 
 		foreach (TutorialTrigger trigger in tutorialTriggersList)
-			trigger.isActive = true;
+			trigger.EnableTrigger(true);
 	}
 }

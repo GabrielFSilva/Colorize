@@ -1,9 +1,10 @@
 fileFormatVersion: 2
-guid: 5df5d66446fa01343b293b24d013ff5e
+guid: 6a0a0ae121cc71c4295826e3addf7e86
 TextureImporter:
   fileIDToRecycleName:
-    21300000: BlackShootUIButton
-    21300002: BlackShootUIButton2
+    21300000: free4all0
+    21300002: BlackShootUIButton
+    21300004: CameraZoomButton
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

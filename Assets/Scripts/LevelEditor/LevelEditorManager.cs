@@ -10,7 +10,8 @@ public class LevelEditorManager : MonoBehaviour {
 	public int 			chapterIndex;
 	public int			stageIndex;
 	
-	public GameObject	platPrefab;
+	public GameObject		platPrefab;
+	public StageDescriptor	stageDescriptor;
 	
 	void Start()
 	{
@@ -53,8 +54,67 @@ public class LevelEditorManager : MonoBehaviour {
 			//Set the root node
 			XmlNode rootNode = xmlDoc.CreateElement("Level");
 			xmlDoc.AppendChild(rootNode);
+
+			/////////////////////////////////////////////////////////////////////
+			//Save some info
+			XmlNode levelInfo = xmlDoc.CreateElement("LevelInfo");
+
+			XmlAttribute levelEditorAttrib = xmlDoc.CreateAttribute("LevelEditorVersion");
+			XmlAttribute chapterAttrib = xmlDoc.CreateAttribute("Chapter");
+			XmlAttribute stageAttrib = xmlDoc.CreateAttribute("Stage");
+
+			levelEditorAttrib.Value = "1";
+			chapterAttrib.Value = chapterIndex.ToString();
+			stageAttrib.Value = stageIndex.ToString();
+
+			levelInfo.Attributes.Append(levelEditorAttrib);
+			levelInfo.Attributes.Append(chapterAttrib);
+			levelInfo.Attributes.Append(stageAttrib);
+
+			rootNode.AppendChild(levelInfo);
+
+			/////////////////////////////////////////////////////////////////////
+			//Save the ammo info
+			XmlNode shootsInfoNode = xmlDoc.CreateElement("ShootsInfo");
+			rootNode.AppendChild(shootsInfoNode);
 			
-			
+			for(int i = 0; i < stageDescriptor.shootTypesList.Count; i ++)
+			{
+				XmlNode shootInfo = xmlDoc.CreateElement("ShootInfo");
+				
+				XmlAttribute shootType = xmlDoc.CreateAttribute("type");
+				XmlAttribute shootWillBeUsed = xmlDoc.CreateAttribute("isUsed");
+				XmlAttribute shootInfinite = xmlDoc.CreateAttribute("isInfinite");
+				XmlAttribute shootAmmo = xmlDoc.CreateAttribute("ammo");
+				XmlAttribute shootTutorialFocus = xmlDoc.CreateAttribute("tutFocus");
+				
+				shootType.Value = i.ToString();
+				
+				if (stageDescriptor.shootAmmoList[i] > 0 || stageDescriptor.shootInfiniteAmmoList[i])
+				{
+					shootWillBeUsed.Value = "true";
+					shootInfinite.Value = stageDescriptor.shootInfiniteAmmoList[i].ToString();
+					shootAmmo.Value = stageDescriptor.shootAmmoList[i].ToString();
+					shootTutorialFocus.Value = stageDescriptor.shootTutorialFocus[i].ToString();
+				}
+				else
+				{
+					shootWillBeUsed.Value = "false";
+					shootInfinite.Value = "false";
+					shootAmmo.Value = "0";
+					shootTutorialFocus.Value = "0";
+				}
+				shootInfo.Attributes.Append(shootType);
+				shootInfo.Attributes.Append(shootWillBeUsed);
+				shootInfo.Attributes.Append(shootInfinite);
+				shootInfo.Attributes.Append(shootAmmo);
+				shootInfo.Attributes.Append(shootTutorialFocus);
+				
+				
+				shootsInfoNode.AppendChild(shootInfo);
+			}
+
+			/////////////////////////////////////////////////////////////////////
 			//Save the platforms info - position/type
 			XmlNode platformsNode = xmlDoc.CreateElement("Platforms");
 			rootNode.AppendChild(platformsNode);
@@ -83,7 +143,9 @@ public class LevelEditorManager : MonoBehaviour {
 
 				platformsNode.AppendChild(platNode);
 			}
-			
+
+			/////////////////////////////////////////////////////////////////////
+			//Sabe the tutorial triggers
 			XmlNode tutorialTriggersNode = xmlDoc.CreateElement("TutorialTriggers");
 			rootNode.AppendChild(tutorialTriggersNode);
 
@@ -94,24 +156,34 @@ public class LevelEditorManager : MonoBehaviour {
 				XmlAttribute triggerPosX = xmlDoc.CreateAttribute("x");
 				XmlAttribute triggerPosY = xmlDoc.CreateAttribute("y");
 				XmlAttribute triggerPosZ = xmlDoc.CreateAttribute("z");
+				XmlAttribute triggerCamPosX = xmlDoc.CreateAttribute("xCam");
+				XmlAttribute triggerCamPosY = xmlDoc.CreateAttribute("yCam");
+				XmlAttribute triggerCamPosZ = xmlDoc.CreateAttribute("zCam");
 				XmlAttribute triggerIndex = xmlDoc.CreateAttribute("index");
 				XmlAttribute triggerColliderY = xmlDoc.CreateAttribute("colliderY");
 
 				triggerPosX.Value = trigger.transform.position.x.ToString();
 				triggerPosY.Value = trigger.transform.position.y.ToString();
 				triggerPosZ.Value = trigger.transform.position.z.ToString();
+				triggerCamPosX.Value = trigger.cameraPosition.x.ToString();
+				triggerCamPosY.Value = trigger.cameraPosition.y.ToString();
+				triggerCamPosZ.Value = trigger.cameraPosition.z.ToString();
 				triggerIndex.Value = trigger.tutorialIndex.ToString();
 				triggerColliderY.Value = trigger.GetComponent<BoxCollider2D>().size.y.ToString();
 
 				triggerNode.Attributes.Append(triggerPosX);
 				triggerNode.Attributes.Append(triggerPosY);
 				triggerNode.Attributes.Append(triggerPosZ);
+				triggerNode.Attributes.Append(triggerCamPosX);
+				triggerNode.Attributes.Append(triggerCamPosY);
+				triggerNode.Attributes.Append(triggerCamPosZ);
 				triggerNode.Attributes.Append(triggerIndex);
 				triggerNode.Attributes.Append(triggerColliderY);
 
 
 				tutorialTriggersNode.AppendChild(triggerNode);
 			}
+			/////////////////////////////////////////////////////////////////////
 			//Save the Energy Sphere info
 			XmlNode energySphereNode = xmlDoc.CreateElement("EnergySphere");
 
@@ -132,6 +204,7 @@ public class LevelEditorManager : MonoBehaviour {
 
 			rootNode.AppendChild(energySphereNode);
 
+			/////////////////////////////////////////////////////////////////////
 			//Save the player info - spawnPoint
 			XmlNode playerNode = xmlDoc.CreateElement("Player");
 			
@@ -148,7 +221,7 @@ public class LevelEditorManager : MonoBehaviour {
 			playerNode.Attributes.Append(zPlayer);
 			
 			rootNode.AppendChild(playerNode);
-			
+
 			//Save the xml file
 			xmlDoc.Save(fs);
 			

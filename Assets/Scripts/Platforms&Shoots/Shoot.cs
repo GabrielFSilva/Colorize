@@ -9,7 +9,7 @@ public class Shoot: MonoBehaviour
 	public SpriteRenderer 			spriteRenderer;
 	public Player 					playerReference;
 
-
+	public float spawnForce;
 	public float yDeath;
 
 	// Pause Variables
@@ -28,7 +28,7 @@ public class Shoot: MonoBehaviour
 		UpdateShootType ();
 
 		//add the start force
-		transform.rigidbody2D.AddRelativeForce (Vector2.right * 300f);
+		transform.rigidbody2D.AddRelativeForce (Vector2.right * spawnForce);
 	}
 
 	void Update () 

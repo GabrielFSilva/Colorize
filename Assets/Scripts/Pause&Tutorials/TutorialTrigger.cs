@@ -6,8 +6,9 @@ public class TutorialTrigger : MonoBehaviour
 	public int 					tutorialIndex;
 	public float				tutorialDuration;
 	public bool 				isActive = true;
+	public Vector3				cameraPosition;
+	
 	public InGameSceneManager	gameSceneManager;
-
 	
 	void OnTriggerEnter2D(Collider2D p_coll) 
 	{
@@ -18,10 +19,18 @@ public class TutorialTrigger : MonoBehaviour
 				return;
 			Debug.Log("Trigger Tutorial " + tutorialIndex);
 
-			isActive = false;
-			gameSceneManager.currentTutorialIndex = tutorialIndex;
-			gameSceneManager.currentTutorialDuration = tutorialDuration;
+			EnableTrigger(false);
+
+			TutorialManager.currentTutorialIndex = tutorialIndex;
+			TutorialManager.currentTutorialDuration = tutorialDuration;
+			TutorialManager.currentTutorialCameraPosition = cameraPosition;
 			gameSceneManager.ChangeToState(InGameSceneManager.InGameStates.TUTORIAL);
 		}
+	}
+
+	public void EnableTrigger(bool p_enable)
+	{
+		isActive = p_enable;
+		particleSystem.renderer.enabled = p_enable;
 	}
 }

@@ -24,6 +24,11 @@ public class Player : MonoBehaviour
 	public bool grounded = true;
 	private bool _groundedFlag = false;
 
+	public float maxHorizontalVelocity;
+	public float maxHorizontalBuffedVelocity;
+
+	public float yDeath;
+
 	public bool 		isPaused = false;
 	public Vector2 		playerVelocity;
 	public float		playerAngularVelocity;
@@ -34,14 +39,19 @@ public class Player : MonoBehaviour
 	public float redBuffDuration;
 	private bool _redBuffActive = false;
 	private float _redBuffTimer = 0.0f;
+	public GameObject redBuffParticle;
 	
 	public float blueBuffDuration;
 	private bool _blueBuffActive = false;
 	private float _blueBuffTimer = 0.0f;
+	public GameObject blueBuffParticle;
 	
 	public float greenBuffDuration;
 	private bool _greenBuffActive = false;
 	private float _greenBuffTimer = 0.0f;
+	public GameObject greenBuffParticle;
+
+
 
 	//====================================================================//
 	//Shoots Management Variables
@@ -65,40 +75,48 @@ public class Player : MonoBehaviour
 	/// </summary>
 	void FixedUpdate()
 	{
-		if (leftArrow)
+		if (grounded)
 		{
+			if (leftArrow)
+			{
+				if (_blueBuffActive)
+					rigidbody2D.AddForce(new Vector2(-1f * buffedRunForce,0));
+				else
+					rigidbody2D.AddForce(new Vector2(-1f * commonRunForce,0));
+				transform.localScale = new Vector3(-1f,transform.localScale.y,1f);
+			}
+			else if (rightArrow)
+			{
+				if (_blueBuffActive)
+					rigidbody2D.AddForce(new Vector2(buffedRunForce,0));
+				else
+					rigidbody2D.AddForce(new Vector2(commonRunForce,0));
+				transform.localScale = new Vector3(1f,transform.localScale.y,1f);
+			}
+			//Test Inputs - REMOVE ON IPHONE/ANDROID
+			if (Input.GetKey(KeyCode.A))
+			{
+				if (_blueBuffActive)
+					rigidbody2D.AddForce(new Vector2(-1f * buffedRunForce,0));
+				else
+					rigidbody2D.AddForce(new Vector2(-1f * commonRunForce,0));
+				transform.localScale = new Vector3(-1f,transform.localScale.y,1f);
+			}
+			else if (Input.GetKey(KeyCode.D))
+			{
+				if (_blueBuffActive)
+					rigidbody2D.AddForce(new Vector2(buffedRunForce,0));
+				else
+					rigidbody2D.AddForce(new Vector2(commonRunForce,0));
+				transform.localScale = new Vector3(1f,transform.localScale.y,1f);
+			}
+
 			if (_blueBuffActive)
-				rigidbody2D.AddForce(new Vector2(-1f * buffedRunForce,0));
+				rigidbody2D.velocity = new Vector2 (Mathf.Clamp(rigidbody2D.velocity.x, maxHorizontalBuffedVelocity *-1 ,maxHorizontalBuffedVelocity), rigidbody2D.velocity.y);
 			else
-				rigidbody2D.AddForce(new Vector2(-1f * commonRunForce,0));
-			transform.localScale = new Vector3(-1f,transform.localScale.y,1f);
+				rigidbody2D.velocity = new Vector2 (Mathf.Clamp(rigidbody2D.velocity.x, maxHorizontalVelocity *-1 ,maxHorizontalVelocity), rigidbody2D.velocity.y);
 		}
-		else if (rightArrow)
-		{
-			if (_blueBuffActive)
-				rigidbody2D.AddForce(new Vector2(buffedRunForce,0));
-			else
-				rigidbody2D.AddForce(new Vector2(commonRunForce,0));
-			transform.localScale = new Vector3(1f,transform.localScale.y,1f);
-		}
-		
-		//Test Inputs - REMOVE ON IPHONE/ANDROID
-		if (Input.GetKey(KeyCode.A))
-		{
-			if (_blueBuffActive)
-				rigidbody2D.AddForce(new Vector2(-1f * buffedRunForce,0));
-			else
-				rigidbody2D.AddForce(new Vector2(-1f * commonRunForce,0));
-			transform.localScale = new Vector3(-1f,transform.localScale.y,1f);
-		}
-		else if (Input.GetKey(KeyCode.D))
-		{
-			if (_blueBuffActive)
-				rigidbody2D.AddForce(new Vector2(buffedRunForce,0));
-			else
-				rigidbody2D.AddForce(new Vector2(commonRunForce,0));
-			transform.localScale = new Vector3(1f,transform.localScale.y,1f);
-		}
+
 		if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space))
 			Jump();
 
@@ -121,8 +139,7 @@ public class Player : MonoBehaviour
 				if (collisions[i].name == "Platform")
 					PlatformCollision(collisions[i].GetComponent<Platform>().platformType);
 			}
-			if (_groundedFlag)
-				grounded = true;
+			grounded = _groundedFlag;
 		}
 		else
 			grounded = false;
@@ -184,6 +201,10 @@ public class Player : MonoBehaviour
 			if (_greenBuffTimer >= greenBuffDuration)
 				_greenBuffActive = false;
 		}
+
+		redBuffParticle.SetActive (_redBuffActive);
+		blueBuffParticle.SetActive (_blueBuffActive);
+		greenBuffParticle.SetActive (_greenBuffActive);
 	}
 
 	/// <summary>
@@ -283,6 +304,12 @@ public class Player : MonoBehaviour
 			shoot.PauseShoot(p_willPause);
 
 		isPaused = p_willPause;
+	}
+
+	public void ResetVelocity()
+	{
+		playerVelocity = Vector2.zero;
+		playerAngularVelocity = 0f;
 	}
 	
 }

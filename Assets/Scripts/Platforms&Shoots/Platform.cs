@@ -12,6 +12,8 @@ public class Platform : MonoBehaviour
 	public int tutorialFocusIndex;
 	public bool onTutorialMode = false;
 
+	public float tutorialSpriteScale = 1.25f;
+
 	void Start () 
 	{
 		ProcessPlatformType ();
@@ -24,8 +26,12 @@ public class Platform : MonoBehaviour
 
 	void Update () 
 	{
-		if (onTutorialMode)
-			tutorialFocusSprite.transform.Rotate (Vector3.forward, -40f * Time.deltaTime);
+		if (onTutorialMode) 
+		{
+			tutorialFocusSprite.transform.Rotate (Vector3.forward, -90f * Time.deltaTime);
+			tutorialSpriteScale = Mathf.Clamp(tutorialSpriteScale - (Time.deltaTime * 2f), 1f,100f);
+			tutorialFocusSprite.transform.localScale = new Vector3(tutorialSpriteScale,tutorialSpriteScale,tutorialSpriteScale);
+		}
 	}
 
 	void OnMouseDown()
@@ -74,6 +80,8 @@ public class Platform : MonoBehaviour
 			if (p_tutorialIndex == tutorialFocusIndex)
 			{
 				tutorialFocusSprite.gameObject.SetActive (true);
+				tutorialSpriteScale = 2.5f;
+				tutorialFocusSprite.transform.localScale = new Vector3(tutorialSpriteScale,tutorialSpriteScale,tutorialSpriteScale);
 				spriteRenderer.color = Color.white;
 
 			}

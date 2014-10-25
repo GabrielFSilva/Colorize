@@ -14,7 +14,8 @@ public class InGameSceneManager : MonoBehaviour
 		GAME,
 		PAUSE,
 		FINISHED,
-		TUTORIAL
+		TUTORIAL,
+		OVERVIEW
 
 	}
 
@@ -26,12 +27,14 @@ public class InGameSceneManager : MonoBehaviour
 	public List<GameObject> 		panelsList;
 	public List<GameObject> 		statesGOList;
 
-	public int						currentTutorialIndex;
-	public float					currentTutorialDuration;
-
+	public UIAnchor	shootUIAnchor;
+	public UIPanel	tutorialPanel;
+	public UIPanel	gamePanel;
+	
 	void Awake()
 	{
-		//levelLoader.LoadLevel ();
+		if (Application.loadedLevelName == "InGameScene")
+			levelLoader.LoadLevel ();
 	}
 	// Use this for initialization
 	void Start () 
@@ -61,7 +64,7 @@ public class InGameSceneManager : MonoBehaviour
 	void EnableObjects(InGameStates p_futureState)
 	{
 		if (currentState == InGameStates.TUTORIAL)
-			tutorialManager.ChangeTutorialMode(false,currentTutorialIndex,currentTutorialDuration);
+			tutorialManager.ChangeTutorialMode(false);
 
 		panelsList [(int)currentState].SetActive (false);
 		statesGOList [(int)currentState].SetActive (false);
@@ -81,6 +84,11 @@ public class InGameSceneManager : MonoBehaviour
 		}
 
 		if (currentState == InGameStates.TUTORIAL)
-			tutorialManager.ChangeTutorialMode(true,currentTutorialIndex,currentTutorialDuration);
+		{
+			tutorialManager.ChangeTutorialMode(true);
+			shootUIAnchor.transform.parent = tutorialPanel.transform;
+		}
+		else
+			shootUIAnchor.transform.parent = gamePanel.transform;
 	}
 }
