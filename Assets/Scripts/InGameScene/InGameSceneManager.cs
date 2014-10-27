@@ -33,8 +33,6 @@ public class InGameSceneManager : MonoBehaviour
 	
 	void Awake()
 	{
-		if (Application.loadedLevelName == "InGameScene")
-			levelLoader.LoadLevel ();
 	}
 	// Use this for initialization
 	void Start () 
@@ -79,7 +77,7 @@ public class InGameSceneManager : MonoBehaviour
 		}
 		else
 		{
-			if (currentState == InGameStates.PAUSE || currentState == InGameStates.TUTORIAL || currentState == InGameStates.FINISHED)
+			if (currentState == InGameStates.PAUSE || currentState == InGameStates.TUTORIAL || currentState == InGameStates.FINISHED || currentState == InGameStates.OVERVIEW)
 				pauseManager.PauseGame(true);
 		}
 

@@ -16,13 +16,16 @@ public class LevelInfo : MonoBehaviour
 
 	void Start()
 	{
-		platformsList = new List<Platform>(GameObject.FindObjectsOfType<Platform>());
-		playerSpawnPosition = GameObject.Find ("Player").transform.position;
-		player = GameObject.Find ("Player").GetComponent<Player> ();
+		if (Application.loadedLevelName == "LevelEditor")
+		{
+			platformsList = new List<Platform>(GameObject.FindObjectsOfType<Platform>());
+			playerSpawnPosition = GameObject.Find ("Player").transform.position;
+			player = GameObject.Find ("Player").GetComponent<Player> ();
 
-		tutorialTriggersList = new List<TutorialTrigger>(GameObject.FindObjectsOfType<TutorialTrigger>());
+			tutorialTriggersList = new List<TutorialTrigger>(GameObject.FindObjectsOfType<TutorialTrigger>());
 
-		energySphere = GameObject.Find ("EnergySphere").GetComponent<EnergySphere> ();
+			energySphere = GameObject.Find ("EnergySphere").GetComponent<EnergySphere> ();
+		}
 	}
 
 	public void ClearInfo()

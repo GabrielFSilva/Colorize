@@ -127,7 +127,7 @@ public class LevelEditorManager : MonoBehaviour {
 				XmlAttribute platformY = xmlDoc.CreateAttribute("y");
 				XmlAttribute platformZ = xmlDoc.CreateAttribute("z");
 				XmlAttribute platformType = xmlDoc.CreateAttribute("type");
-				XmlAttribute platformTutorialFocus = xmlDoc.CreateAttribute("tuto");
+				XmlAttribute platformTutorialFocus = xmlDoc.CreateAttribute("tutFocus");
 
 				platformX.Value = plat.transform.position.x.ToString();
 				platformY.Value = plat.transform.position.y.ToString();
@@ -160,6 +160,7 @@ public class LevelEditorManager : MonoBehaviour {
 				XmlAttribute triggerCamPosY = xmlDoc.CreateAttribute("yCam");
 				XmlAttribute triggerCamPosZ = xmlDoc.CreateAttribute("zCam");
 				XmlAttribute triggerIndex = xmlDoc.CreateAttribute("index");
+				XmlAttribute triggerColliderX = xmlDoc.CreateAttribute("colliderX");
 				XmlAttribute triggerColliderY = xmlDoc.CreateAttribute("colliderY");
 
 				triggerPosX.Value = trigger.transform.position.x.ToString();
@@ -169,6 +170,7 @@ public class LevelEditorManager : MonoBehaviour {
 				triggerCamPosY.Value = trigger.cameraPosition.y.ToString();
 				triggerCamPosZ.Value = trigger.cameraPosition.z.ToString();
 				triggerIndex.Value = trigger.tutorialIndex.ToString();
+				triggerColliderX.Value = trigger.GetComponent<BoxCollider2D>().size.x.ToString();
 				triggerColliderY.Value = trigger.GetComponent<BoxCollider2D>().size.y.ToString();
 
 				triggerNode.Attributes.Append(triggerPosX);
@@ -178,6 +180,7 @@ public class LevelEditorManager : MonoBehaviour {
 				triggerNode.Attributes.Append(triggerCamPosY);
 				triggerNode.Attributes.Append(triggerCamPosZ);
 				triggerNode.Attributes.Append(triggerIndex);
+				triggerNode.Attributes.Append(triggerColliderX);
 				triggerNode.Attributes.Append(triggerColliderY);
 
 
@@ -190,16 +193,19 @@ public class LevelEditorManager : MonoBehaviour {
 			XmlAttribute xEnergySphere = xmlDoc.CreateAttribute("x");
 			XmlAttribute yEnergySphere = xmlDoc.CreateAttribute("y");
 			XmlAttribute zEnergySphere = xmlDoc.CreateAttribute("z");
+			XmlAttribute focusEnergySphere = xmlDoc.CreateAttribute("tutFocus");
 			XmlAttribute typeEnergySphere = xmlDoc.CreateAttribute("type");
 
 			xEnergySphere.Value = __energySphere.transform.position.x.ToString();
 			yEnergySphere.Value = __energySphere.transform.position.y.ToString();
 			zEnergySphere.Value = __energySphere.transform.position.z.ToString();
+			focusEnergySphere.Value = __energySphere.tutorialFocusIndex.ToString();
 			typeEnergySphere.Value = ((int)__energySphere.sphereType).ToString();
 
 			energySphereNode.Attributes.Append(xEnergySphere);
 			energySphereNode.Attributes.Append(yEnergySphere);
 			energySphereNode.Attributes.Append(zEnergySphere);
+			energySphereNode.Attributes.Append(focusEnergySphere);
 			energySphereNode.Attributes.Append(typeEnergySphere);
 
 			rootNode.AppendChild(energySphereNode);

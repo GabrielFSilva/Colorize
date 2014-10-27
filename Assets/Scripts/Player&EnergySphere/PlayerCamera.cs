@@ -4,6 +4,7 @@ using System.Collections;
 public class PlayerCamera : MonoBehaviour 
 {
 	public LevelInfo levelInfo;
+	public InGameSceneManager	gameSceneManager;
 
 	public Player player;
 	public Vector3 tutorialModePosition;
@@ -27,11 +28,15 @@ public class PlayerCamera : MonoBehaviour
 		//cameraState = CameraState.FOLLOWING_PLAYER;
 		player = LevelInfo.player;
 		LevelInfo.playerCamera = this;
+		transform.position = new Vector3 (LevelInfo.playerSpawnPosition.x, LevelInfo.playerSpawnPosition.y, transform.position.z);
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () 
 	{
+		if (gameSceneManager.currentState == InGameSceneManager.InGameStates.LOADING)
+			return;
+
 		if (cameraState == CameraState.FOLLOWING_PLAYER)
 		{
 			Vector3 point = camera.WorldToViewportPoint(player.transform.position);

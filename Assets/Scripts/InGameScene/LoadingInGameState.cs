@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class LoadingInGameState : MonoBehaviour 
 {
+	public LevelLoader	levelLoader;
 	public Transform loadingIcon;
 	public UILabel loadingLabel;
 
@@ -15,15 +17,18 @@ public class LoadingInGameState : MonoBehaviour
 	private bool	fadeActive = false;
 	private float	fadeTimeCount;
 
+	public List<UIPanel>		hintPanels;
+
 	void Start () 
 	{
 		
 	}
 	void OnEnable()
 	{
-	
-		StartCoroutine (CoroutineTest ());
 		StartFade ();
+		StartCoroutine (CoroutineTest ());
+
+		DisplayHint ();
 	}
 
 	void OnDisable()
@@ -34,7 +39,7 @@ public class LoadingInGameState : MonoBehaviour
 	}
 	void Update () 
 	{
-		loadingIcon.Rotate (Vector3.forward, -40f * Time.deltaTime);
+		loadingIcon.Rotate (Vector3.forward, -90f * Time.deltaTime);
 		_loadingLabelTimeCounter += Time.deltaTime * 1.3f;
 		if (_loadingLabelTimeCounter >= 1.0f)
 			UpdateLabelState();
@@ -70,6 +75,15 @@ public class LoadingInGameState : MonoBehaviour
 		_loadingLabelTimeCounter = 0f;
 	}
 
+	private void DisplayHint()
+	{
+		int _index = Random.Range (0,hintPanels.Count);
+
+		foreach (UIPanel panel in hintPanels)
+		{
+			panel.gameObject.SetActive( _index == hintPanels.IndexOf(panel) ? true : false);
+		}
+	}
 	void StartFade ()
 	{
 		fadeActive = true;
@@ -78,8 +92,12 @@ public class LoadingInGameState : MonoBehaviour
 	}
 	IEnumerator CoroutineTest()
 	{
-		yield return new WaitForSeconds (2f);
+		if (Application.loadedLevelName == "InGameScene")
+			levelLoader.LoadLevel ();
+		yield return new WaitForSeconds (0f);
 		gameObject.transform.parent.GetComponent<InGameSceneManager> ().ChangeToState(InGameSceneManager.InGameStates.GAME);
+
+
 	}
 	IEnumerator WaitFade()
 	{

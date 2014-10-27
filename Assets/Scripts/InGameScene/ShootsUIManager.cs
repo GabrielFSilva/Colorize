@@ -36,10 +36,9 @@ public class ShootsUIManager : MonoBehaviour
 
 	void OnEnable()
 	{
-		if (player == null)
-			player = GameObject.Find ("Player").GetComponent<Player>();
+		player = LevelInfo.player;
 
-		player.shootsUIManager = this;
+		//player.shootsUIManager = this;
 
 		//Load the ammo info from the ChapterManager
 		if (Application.loadedLevelName == "LevelEditor")

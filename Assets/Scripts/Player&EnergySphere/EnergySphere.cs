@@ -4,6 +4,7 @@ using System.Collections;
 public class EnergySphere : MonoBehaviour 
 {
 	public SpriteRenderer 	spriteRenderer;
+	public SpriteRenderer 	tutorialFocusSprite;
 	public Transform 		floorTransform;
 	public Transform 		ceilTransform;
 	public float 			movementSpeed;
@@ -14,6 +15,11 @@ public class EnergySphere : MonoBehaviour
 	public bool 					isPaused = false;
 
 	public GlobalInfo.ShootTypes	sphereType;
+
+	public int tutorialFocusIndex;
+	public bool onTutorialMode = false;
+	
+	public float tutorialSpriteScale = 1.25f;
 
 	void Start () 
 	{
@@ -26,6 +32,10 @@ public class EnergySphere : MonoBehaviour
 		{
 			timeCount += Time.deltaTime * movementSpeed;
 			spriteRenderer.transform.position = Vector3.Lerp (floorTransform.position, ceilTransform.position, (Mathf.Cos(timeCount) *0.5f) + 0.5f);
+		}
+		if (onTutorialMode)
+		{
+			tutorialFocusSprite.transform.Rotate (Vector3.forward, -90f * Time.deltaTime);
 		}
 	}
 
@@ -44,5 +54,37 @@ public class EnergySphere : MonoBehaviour
 	public void PauseEnergySphere(bool p_willPause)
 	{
 		isPaused = p_willPause;
+	}
+
+	public void TutorialMode(bool p_willEnterOnTutorial, int p_tutorialIndex)
+	{
+		onTutorialMode = p_willEnterOnTutorial;
+		
+		//Entering Tutorial Mode
+		if (p_willEnterOnTutorial)
+		{
+			//Is on focus during tutorial
+			if (p_tutorialIndex == tutorialFocusIndex)
+			{
+				tutorialFocusSprite.gameObject.SetActive (true);
+				spriteRenderer.color = Color.white;
+				
+			}
+			//Isn't in focus
+			else
+			{
+				tutorialFocusSprite.gameObject.SetActive (false);
+				spriteRenderer.color = Color.gray;
+			}
+		}
+		//Leaving Tutorial Mode
+		else
+		{
+			tutorialFocusSprite.gameObject.SetActive (false);
+			spriteRenderer.color = Color.white;
+			
+		}
+		
+		
 	}
 }

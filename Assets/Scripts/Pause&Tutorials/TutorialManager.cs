@@ -17,7 +17,7 @@ public class TutorialManager : MonoBehaviour
 		isOnTutorialMode = p_tutorialMode;
 		foreach (Platform platform in LevelInfo.platformsList)
 			platform.TutorialMode (p_tutorialMode, currentTutorialIndex);
-
+		LevelInfo.energySphere.TutorialMode(p_tutorialMode, currentTutorialIndex);
 		shootUIManager.TutorialMode (p_tutorialMode, currentTutorialIndex);
 
 		if (p_tutorialMode)

@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
 	public bool grounded = true;
 	private bool _groundedFlag = false;
 
+	public float onAirForceMultiplier;
 	public float maxHorizontalVelocity;
 	public float maxHorizontalBuffedVelocity;
 
@@ -62,6 +63,9 @@ public class Player : MonoBehaviour
 	public GlobalInfo.ShootTypes shootType = GlobalInfo.ShootTypes.RED;
 	public float shootSpawnDistance;
 
+	public float shootCooldownDuration;
+	private float shootCooldownTimer;
+	private bool shootOnCooldown = false;
 	//====================================================================//
 	void Awake()
 	{
@@ -77,7 +81,7 @@ public class Player : MonoBehaviour
 	{
 		if (grounded)
 		{
-			if (leftArrow)
+			if (leftArrow || Input.GetKey(KeyCode.A))
 			{
 				if (_blueBuffActive)
 					rigidbody2D.AddForce(new Vector2(-1f * buffedRunForce,0));
@@ -85,24 +89,7 @@ public class Player : MonoBehaviour
 					rigidbody2D.AddForce(new Vector2(-1f * commonRunForce,0));
 				transform.localScale = new Vector3(-1f,transform.localScale.y,1f);
 			}
-			else if (rightArrow)
-			{
-				if (_blueBuffActive)
-					rigidbody2D.AddForce(new Vector2(buffedRunForce,0));
-				else
-					rigidbody2D.AddForce(new Vector2(commonRunForce,0));
-				transform.localScale = new Vector3(1f,transform.localScale.y,1f);
-			}
-			//Test Inputs - REMOVE ON IPHONE/ANDROID
-			if (Input.GetKey(KeyCode.A))
-			{
-				if (_blueBuffActive)
-					rigidbody2D.AddForce(new Vector2(-1f * buffedRunForce,0));
-				else
-					rigidbody2D.AddForce(new Vector2(-1f * commonRunForce,0));
-				transform.localScale = new Vector3(-1f,transform.localScale.y,1f);
-			}
-			else if (Input.GetKey(KeyCode.D))
+			else if (rightArrow || Input.GetKey(KeyCode.D))
 			{
 				if (_blueBuffActive)
 					rigidbody2D.AddForce(new Vector2(buffedRunForce,0));
@@ -115,6 +102,25 @@ public class Player : MonoBehaviour
 				rigidbody2D.velocity = new Vector2 (Mathf.Clamp(rigidbody2D.velocity.x, maxHorizontalBuffedVelocity *-1 ,maxHorizontalBuffedVelocity), rigidbody2D.velocity.y);
 			else
 				rigidbody2D.velocity = new Vector2 (Mathf.Clamp(rigidbody2D.velocity.x, maxHorizontalVelocity *-1 ,maxHorizontalVelocity), rigidbody2D.velocity.y);
+		}
+		else
+		{
+			if (leftArrow || Input.GetKey(KeyCode.A))
+			{
+				if (_blueBuffActive)
+					rigidbody2D.AddForce(new Vector2(-1f * onAirForceMultiplier * buffedRunForce,0));
+				else
+					rigidbody2D.AddForce(new Vector2(-1f * onAirForceMultiplier * commonRunForce,0));
+				transform.localScale = new Vector3(-1f,transform.localScale.y,1f);
+			}
+			else if (rightArrow || Input.GetKey(KeyCode.D))
+			{
+				if (_blueBuffActive)
+					rigidbody2D.AddForce(new Vector2(onAirForceMultiplier * buffedRunForce,0));
+				else
+					rigidbody2D.AddForce(new Vector2(onAirForceMultiplier * commonRunForce,0));
+				transform.localScale = new Vector3(1f,transform.localScale.y,1f);
+			}
 		}
 
 		if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space))
@@ -146,6 +152,13 @@ public class Player : MonoBehaviour
 
 
 		UpdateBuffs ();
+
+		if (shootOnCooldown)
+		{
+			shootCooldownTimer += Time.deltaTime;
+			if (shootCooldownTimer > shootCooldownDuration)
+				shootOnCooldown = false;
+		}
 	}
 
 	/// <summary>
@@ -253,12 +266,17 @@ public class Player : MonoBehaviour
 	/// </summary>
 	public void CreateShoot()
 	{
+		if (shootOnCooldown)
+			return;
+
 		if (isPaused)
 			return;
 
 		if (shootsUIManager.GetAmmo(shootType) == 0)
 			return;
 
+		shootOnCooldown = true;
+		shootCooldownTimer = 0.0f;
 		shootsUIManager.DescreaseAmmo (shootType);
 		//player position in relation to the screen
 		Vector3 playerScreenPosition = Camera.main.WorldToScreenPoint (transform.position);

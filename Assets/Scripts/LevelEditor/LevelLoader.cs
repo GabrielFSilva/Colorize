@@ -72,7 +72,7 @@ public class LevelLoader : MonoBehaviour
 			Platform __tempPlat = ((GameObject) GameObject.Instantiate(platformPrefab)).GetComponent<Platform>();
 			__tempPlat.transform.parent = platformsContainerTransform;
 			__tempPlat.transform.position = new Vector3(float.Parse(platformNode.Attributes["x"].Value),float.Parse(platformNode.Attributes["y"].Value),float.Parse(platformNode.Attributes["z"].Value));
-			__tempPlat.tutorialFocusIndex = int.Parse(platformNode.Attributes["tuto"].Value);
+			__tempPlat.tutorialFocusIndex = int.Parse(platformNode.Attributes["tutFocus"].Value);
 			__tempPlat.platformType = (GlobalInfo.PlaformType)int.Parse(platformNode.Attributes["type"].Value);
 			__tempPlat.platformStartType = __tempPlat.platformType;
 
@@ -106,6 +106,7 @@ public class LevelLoader : MonoBehaviour
 		LevelInfo.energySphere.transform.parent = baseSceneryTransform;
 		LevelInfo.energySphere.transform.position = new Vector3 (float.Parse (energySphereNode.Attributes ["x"].Value), float.Parse (energySphereNode.Attributes ["y"].Value), float.Parse (energySphereNode.Attributes ["z"].Value));
 		LevelInfo.energySphere.name = "EnergySphere";
+		LevelInfo.energySphere.tutorialFocusIndex = int.Parse(energySphereNode.Attributes["tutFocus"].Value);
 		LevelInfo.energySphere.gameSceneManager = gameSceneManager;
 		////////////////////////////////////////////////////////////////////
 		// Load Player
