@@ -1,8 +1,9 @@
 fileFormatVersion: 2
-guid: bd6634243f9c0c84db9aca33cf3a9f64
+guid: e8fa774c4b804bf49af4d464678f4c32
 TextureImporter:
   fileIDToRecycleName:
-    21300000: RedShootUIButton
+    21300000: ammor
+    21300002: RedShootUIButton
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -25,7 +26,7 @@ TextureImporter:
   textureFormat: -3
   maxTextureSize: 1024
   textureSettings:
-    filterMode: 2
+    filterMode: -1
     aniso: 1
     mipBias: -1
     wrapMode: 1

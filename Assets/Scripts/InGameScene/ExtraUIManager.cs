@@ -20,8 +20,10 @@ public class ExtraUIManager : MonoBehaviour
 	}
 	void Start () 
 	{
-		player = GameObject.Find ("Player").GetComponent<Player> ();
-		
+		player = LevelInfo.player;
+
+		if (InGameSceneManager.selectedChapter == 1 || (InGameSceneManager.selectedChapter == 2 && InGameSceneManager.selectedStage == 1))
+			overviewModeButton.gameObject.SetActive(false);
 	}
 	
 	void OnEnable()

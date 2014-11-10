@@ -53,11 +53,11 @@ public class StageSelectMenuState : MonoBehaviour
 		for(int i = 0; i < stageSpritesList.Count; i++)
 		{
 			if (!__tempChapterDescriptor.stages[i].isUnlocked)
-				stageSpritesList[i].color = lockedColor;
+				stageSpritesList[i].spriteName = "buttonlock";
 			else if (i == _selectStage - 1)
-				stageSpritesList[i].color = selectedColor;
+				stageSpritesList[i].spriteName = "Buttonidle";
 			else
-				stageSpritesList[i].color = unselectedColor;
+				stageSpritesList[i].spriteName = "Buttonactive";
 		}
 	}
 

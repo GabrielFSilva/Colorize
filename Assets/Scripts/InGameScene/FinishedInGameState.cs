@@ -75,8 +75,17 @@ public class FinishedInGameState : MonoBehaviour
 		ignoreClicks = false;
 		if (clickCall == 0)
 		{
-			InGameSceneManager.selectedStage += 1;
-			Application.LoadLevel (Application.loadedLevelName);
+			if (ChaptersManager.GetInstance().chaptersList.chapters[InGameSceneManager.selectedChapter -1].stages.Count > InGameSceneManager.selectedStage)
+			{
+				InGameSceneManager.selectedStage ++;
+				Application.LoadLevel (Application.loadedLevelName);
+			}
+			else
+			{
+				InGameSceneManager.selectedChapter ++;
+				InGameSceneManager.selectedStage = 1;
+				Application.LoadLevel (Application.loadedLevelName);
+			}
 		}
 		else if (clickCall == 1)
 			Application.LoadLevel (Application.loadedLevelName);

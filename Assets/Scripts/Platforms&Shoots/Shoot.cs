@@ -7,6 +7,7 @@ public class Shoot: MonoBehaviour
 	public event Action<Shoot> 		onDestroy;
 	public GlobalInfo.ShootTypes 	shootType;
 	public SpriteRenderer 			spriteRenderer;
+	public Animator					animator;
 	public Player 					playerReference;
 
 	public float spawnForce;
@@ -48,7 +49,8 @@ public class Shoot: MonoBehaviour
 	
 	void UpdateShootType ()
 	{
-		spriteRenderer.sprite = ShootsManager.GetInstance ().GetShootSpritesSprite (shootType);
+		//spriteRenderer.sprite = ShootsManager.GetInstance ().GetShootSpritesSprite (shootType);
+		animator.SetInteger ("ShootType", (int)shootType);
 	}
 	
 	void OnTriggerEnter2D(Collider2D p_coll) 

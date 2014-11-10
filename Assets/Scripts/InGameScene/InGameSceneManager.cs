@@ -4,9 +4,8 @@ using System.Collections;
 
 public class InGameSceneManager : MonoBehaviour 
 {
-
-	public static int selectedChapter = 1;
-	public static int selectedStage = 1;
+	public static int selectedChapter = 2;
+	public static int selectedStage = 2;
 	
 	public enum InGameStates
 	{
@@ -27,6 +26,8 @@ public class InGameSceneManager : MonoBehaviour
 	public List<GameObject> 		panelsList;
 	public List<GameObject> 		statesGOList;
 
+
+	public UILabel	stageNameLabel;
 	public UIAnchor	shootUIAnchor;
 	public UIPanel	tutorialPanel;
 	public UIPanel	gamePanel;
@@ -38,6 +39,7 @@ public class InGameSceneManager : MonoBehaviour
 	void Start () 
 	{
 		Debug.Log ("starting inGame scene. Stage " + selectedChapter + "-" + selectedStage);
+		stageNameLabel.text = "Stage: " + selectedChapter.ToString () + "-" + selectedStage.ToString ();
 	}
 	
 	// Update is called once per frame

@@ -94,7 +94,7 @@ public class LoadingInGameState : MonoBehaviour
 	{
 		if (Application.loadedLevelName == "InGameScene")
 			levelLoader.LoadLevel ();
-		yield return new WaitForSeconds (0f);
+		yield return new WaitForSeconds (3f);
 		gameObject.transform.parent.GetComponent<InGameSceneManager> ().ChangeToState(InGameSceneManager.InGameStates.GAME);
 
 

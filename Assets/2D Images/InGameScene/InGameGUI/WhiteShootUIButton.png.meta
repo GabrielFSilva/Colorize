@@ -1,8 +1,9 @@
 fileFormatVersion: 2
-guid: ed2aaf7330b8aa34b926510b512099aa
+guid: 9862c93e7a20d0246843177c463279ea
 TextureImporter:
   fileIDToRecycleName:
-    21300000: WhiteShootUIButton
+    21300000: ammow
+    21300002: WhiteShootUIButton
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -25,7 +26,7 @@ TextureImporter:
   textureFormat: -3
   maxTextureSize: 1024
   textureSettings:
-    filterMode: 2
+    filterMode: -1
     aniso: 1
     mipBias: -1
     wrapMode: 1

@@ -53,11 +53,11 @@ public class ChapterSelectMenuState : MonoBehaviour
 		for(int i = 0; i < chapterSpritesList.Count; i++)
 		{
 			if (!__tempChapterList[i].isUnlocked)
-				chapterSpritesList[i].color = lockedColor;
+				chapterSpritesList[i].spriteName = "buttonlock";
 			else if (i == _selectChapter - 1)
-				chapterSpritesList[i].color = selectedColor;
+				chapterSpritesList[i].spriteName = "Buttonidle";
 			else
-				chapterSpritesList[i].color = unselectedColor;
+				chapterSpritesList[i].spriteName = "Buttonactive";
 		}
 	}
 	

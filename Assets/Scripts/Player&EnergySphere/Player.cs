@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 	//====================================================================//
 	//Player Movement Variables
 	//====================================================================//
+	public Animator		animator;
 	public Collider2D[] collisions;
 
 	public Transform groundCheckA;
@@ -128,6 +129,10 @@ public class Player : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.P))
 			PausePlayer(!isPaused);
+
+		animator.SetFloat ("SpeedX",Mathf.Abs(rigidbody2D.velocity.x));
+		animator.SetFloat ("SpeedY",rigidbody2D.velocity.y);
+		animator.SetFloat ("SpeedYAbs",Mathf.Abs(rigidbody2D.velocity.y));
 	}
 
 	/// <summary>
@@ -159,6 +164,7 @@ public class Player : MonoBehaviour
 			if (shootCooldownTimer > shootCooldownDuration)
 				shootOnCooldown = false;
 		}
+		animator.SetBool ("Grounded", grounded);
 	}
 
 	/// <summary>
@@ -176,6 +182,7 @@ public class Player : MonoBehaviour
 			else
 				rigidbody2D.AddForce(new Vector2(0,commonJumpForce * rigidbody2D.gravityScale));
 		}
+
 	}
 
 	/// <summary>
