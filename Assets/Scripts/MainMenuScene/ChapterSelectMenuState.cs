@@ -75,6 +75,7 @@ public class ChapterSelectMenuState : MonoBehaviour
 		if (ChaptersManager.GetInstance ().chaptersList.chapters[_selectChapter -1].isUnlocked)
 		{
 			MainMenuSceneManager.selectedChapter = _selectChapter;
+			InGameSceneManager.selectedChapter = _selectChapter;
 			transform.parent.GetComponent<MainMenuSceneManager> ().ChangeToState (MainMenuSceneManager.MainMenuStates.STAGE_SELECT);
 		}
 		else

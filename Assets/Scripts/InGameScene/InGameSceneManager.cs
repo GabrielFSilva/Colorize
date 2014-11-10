@@ -5,7 +5,8 @@ using System.Collections;
 public class InGameSceneManager : MonoBehaviour 
 {
 	public static int selectedChapter = 2;
-	public static int selectedStage = 2;
+	public static int selectedStage = 5
+		;
 	
 	public enum InGameStates
 	{
