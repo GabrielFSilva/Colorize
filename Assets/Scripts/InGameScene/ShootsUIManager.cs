@@ -26,6 +26,7 @@ public class ShootsUIManager : MonoBehaviour
 	//Shoots info
 	public List<GlobalInfo.ShootTypes> 		shootTypesList;
 	public List<int> 						shootAmmoList;
+	public List<int> 						shootStartAmmoList;
 	public List<bool>						shootInfiniteAmmoList;
 	public List<int>						shootTutorialFocus;
 	
@@ -162,6 +163,12 @@ public class ShootsUIManager : MonoBehaviour
 		return 0;
 	}
 
+	public void RestartAmmo()
+	{
+		shootAmmoList.Clear ();
+		shootAmmoList = new List<int> (shootStartAmmoList);
+		UpdateAmmoLabels ();
+	}
 	public void TutorialMode(bool p_willEnterOnTutorial, int p_tutorialIndex)
 	{
 		onTutorialMode = p_willEnterOnTutorial;

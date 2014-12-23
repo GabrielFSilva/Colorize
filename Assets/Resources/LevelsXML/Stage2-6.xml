@@ -1,0 +1,67 @@
+<Level>
+  <LevelInfo LevelEditorVersion="1" Chapter="2" Stage="6" />
+  <ShootsInfo>
+  </ShootsInfo>
+  <Platforms>
+    <Platform x="30" y="-3.5" z="0" type="0" tutFocus="0" />
+    <Platform x="29" y="-3.5" z="0" type="0" tutFocus="0" />
+    <Platform x="32" y="-3.5" z="0" type="0" tutFocus="0" />
+    <Platform x="31" y="-3.5" z="0" type="0" tutFocus="0" />
+    <Platform x="30" y="2" z="0" type="3" tutFocus="0" />
+    <Platform x="29" y="2" z="0" type="2" tutFocus="0" />
+    <Platform x="27" y="2" z="0" type="2" tutFocus="0" />
+    <Platform x="26" y="2" z="0" type="2" tutFocus="0" />
+    <Platform x="28" y="2" z="0" type="2" tutFocus="0" />
+    <Platform x="25" y="2" z="0" type="0" tutFocus="0" />
+    <Platform x="24" y="2" z="0" type="0" tutFocus="0" />
+    <Platform x="22" y="2" z="0" type="0" tutFocus="0" />
+    <Platform x="23" y="2" z="0" type="0" tutFocus="0" />
+    <Platform x="20" y="2" z="0" type="0" tutFocus="0" />
+    <Platform x="21" y="2" z="0" type="0" tutFocus="0" />
+    <Platform x="13" y="-3.5" z="0" type="0" tutFocus="0" />
+    <Platform x="12" y="-3.5" z="0" type="0" tutFocus="0" />
+    <Platform x="15" y="-3.5" z="0" type="0" tutFocus="0" />
+    <Platform x="14" y="-3.5" z="0" type="0" tutFocus="0" />
+    <Platform x="16" y="-3.5" z="0" type="0" tutFocus="0" />
+    <Platform x="17" y="-3.5" z="0" type="0" tutFocus="0" />
+    <Platform x="20" y="-3.5" z="0" type="2" tutFocus="0" />
+    <Platform x="18" y="-3.5" z="0" type="2" tutFocus="0" />
+    <Platform x="19" y="-3.5" z="0" type="2" tutFocus="0" />
+    <Platform x="21" y="-3.5" z="0" type="2" tutFocus="0" />
+    <Platform x="22" y="-3.5" z="0" type="3" tutFocus="0" />
+    <Platform x="14.5" y="2" z="0" type="3" tutFocus="0" />
+    <Platform x="13.5" y="2" z="0" type="2" tutFocus="0" />
+    <Platform x="11.5" y="2" z="0" type="2" tutFocus="0" />
+    <Platform x="10.5" y="2" z="0" type="2" tutFocus="0" />
+    <Platform x="12.5" y="2" z="0" type="2" tutFocus="0" />
+    <Platform x="9.5" y="2" z="0" type="0" tutFocus="0" />
+    <Platform x="8.5" y="2" z="0" type="0" tutFocus="0" />
+    <Platform x="6.5" y="2" z="0" type="0" tutFocus="0" />
+    <Platform x="2.5" y="2" z="0" type="0" tutFocus="0" />
+    <Platform x="7.5" y="2" z="0" type="0" tutFocus="0" />
+    <Platform x="3.5" y="2" z="0" type="0" tutFocus="0" />
+    <Platform x="4.5" y="2" z="0" type="0" tutFocus="0" />
+    <Platform x="5.5" y="2" z="0" type="0" tutFocus="0" />
+    <Platform x="0.5" y="-3.5" z="0" type="0" tutFocus="0" />
+    <Platform x="-0.5" y="-3.5" z="0" type="0" tutFocus="0" />
+    <Platform x="-1.5" y="-3.5" z="0" type="0" tutFocus="0" />
+    <Platform x="35" y="-3.5" z="0" type="2" tutFocus="0" />
+    <Platform x="37" y="-1.5" z="0" type="0" tutFocus="0" />
+    <Platform x="37" y="-2.5" z="0" type="0" tutFocus="0" />
+    <Platform x="2.5" y="-3.5" z="0" type="3" tutFocus="1" />
+    <Platform x="38" y="-1.5" z="0" type="0" tutFocus="0" />
+    <Platform x="33" y="-3.5" z="0" type="2" tutFocus="0" />
+    <Platform x="-2.5" y="-3.5" z="0" type="0" tutFocus="0" />
+    <Platform x="38" y="-2.5" z="0" type="0" tutFocus="0" />
+    <Platform x="1.5" y="-3.5" z="0" type="0" tutFocus="0" />
+    <Platform x="34" y="-3.5" z="0" type="2" tutFocus="0" />
+    <Platform x="37" y="-3.5" z="0" type="0" tutFocus="0" />
+    <Platform x="36" y="-3.5" z="0" type="2" tutFocus="0" />
+    <Platform x="38" y="-3.5" z="0" type="0" tutFocus="0" />
+  </Platforms>
+  <TutorialTriggers>
+    <TutorialTrigger x="-0.5" y="0" z="0" img="Tutorial2-6" xCam="2.5" yCam="-3" zCam="-13" index="1" colliderX="1" colliderY="6" />
+  </TutorialTriggers>
+  <EnergySphere x="34.5" y="-2" z="0" tutFocus="0" type="3" />
+  <Player x="-2" y="-2.070632" z="0" />
+</Level>

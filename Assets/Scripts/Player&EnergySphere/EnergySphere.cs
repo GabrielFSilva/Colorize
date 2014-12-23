@@ -24,6 +24,17 @@ public class EnergySphere : MonoBehaviour
 	void Start () 
 	{
 		timeCount = Time.time;
+
+		if (sphereType == GlobalInfo.ShootTypes.WHITE)
+			spriteRenderer.color = Color.white;
+		else if (sphereType == GlobalInfo.ShootTypes.RED)
+			spriteRenderer.color = Color.red;
+		else if (sphereType == GlobalInfo.ShootTypes.BLUE)
+			spriteRenderer.color = Color.blue;
+		else if (sphereType == GlobalInfo.ShootTypes.GREEN)
+			spriteRenderer.color = Color.green;
+		else if (sphereType == GlobalInfo.ShootTypes.BLACK)
+			spriteRenderer.color = Color.black;
 	}
 
 	void Update ()
@@ -67,7 +78,16 @@ public class EnergySphere : MonoBehaviour
 			if (p_tutorialIndex == tutorialFocusIndex)
 			{
 				tutorialFocusSprite.gameObject.SetActive (true);
-				spriteRenderer.color = Color.white;
+				if (sphereType == GlobalInfo.ShootTypes.WHITE)
+					spriteRenderer.color = Color.white;
+				else if (sphereType == GlobalInfo.ShootTypes.RED)
+					spriteRenderer.color = Color.red;
+				else if (sphereType == GlobalInfo.ShootTypes.BLUE)
+					spriteRenderer.color = Color.blue;
+				else if (sphereType == GlobalInfo.ShootTypes.GREEN)
+					spriteRenderer.color = Color.green;
+				else if (sphereType == GlobalInfo.ShootTypes.BLACK)
+					spriteRenderer.color = Color.black;
 				
 			}
 			//Isn't in focus
@@ -81,7 +101,16 @@ public class EnergySphere : MonoBehaviour
 		else
 		{
 			tutorialFocusSprite.gameObject.SetActive (false);
-			spriteRenderer.color = Color.white;
+			if (sphereType == GlobalInfo.ShootTypes.WHITE)
+				spriteRenderer.color = Color.white;
+			else if (sphereType == GlobalInfo.ShootTypes.RED)
+				spriteRenderer.color = Color.red;
+			else if (sphereType == GlobalInfo.ShootTypes.BLUE)
+				spriteRenderer.color = Color.blue;
+			else if (sphereType == GlobalInfo.ShootTypes.GREEN)
+				spriteRenderer.color = Color.green;
+			else if (sphereType == GlobalInfo.ShootTypes.BLACK)
+				spriteRenderer.color = Color.black;
 			
 		}
 		

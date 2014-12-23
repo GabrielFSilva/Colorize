@@ -156,6 +156,7 @@ public class LevelEditorManager : MonoBehaviour {
 				XmlAttribute triggerPosX = xmlDoc.CreateAttribute("x");
 				XmlAttribute triggerPosY = xmlDoc.CreateAttribute("y");
 				XmlAttribute triggerPosZ = xmlDoc.CreateAttribute("z");
+				XmlAttribute triggerImageName = xmlDoc.CreateAttribute("img");
 				XmlAttribute triggerCamPosX = xmlDoc.CreateAttribute("xCam");
 				XmlAttribute triggerCamPosY = xmlDoc.CreateAttribute("yCam");
 				XmlAttribute triggerCamPosZ = xmlDoc.CreateAttribute("zCam");
@@ -166,6 +167,7 @@ public class LevelEditorManager : MonoBehaviour {
 				triggerPosX.Value = trigger.transform.position.x.ToString();
 				triggerPosY.Value = trigger.transform.position.y.ToString();
 				triggerPosZ.Value = trigger.transform.position.z.ToString();
+				triggerImageName.Value = trigger.imageName;
 				triggerCamPosX.Value = trigger.cameraPosition.x.ToString();
 				triggerCamPosY.Value = trigger.cameraPosition.y.ToString();
 				triggerCamPosZ.Value = trigger.cameraPosition.z.ToString();
@@ -176,6 +178,7 @@ public class LevelEditorManager : MonoBehaviour {
 				triggerNode.Attributes.Append(triggerPosX);
 				triggerNode.Attributes.Append(triggerPosY);
 				triggerNode.Attributes.Append(triggerPosZ);
+				triggerNode.Attributes.Append(triggerImageName);
 				triggerNode.Attributes.Append(triggerCamPosX);
 				triggerNode.Attributes.Append(triggerCamPosY);
 				triggerNode.Attributes.Append(triggerCamPosZ);

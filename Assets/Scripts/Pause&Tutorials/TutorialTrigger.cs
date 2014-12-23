@@ -6,10 +6,18 @@ public class TutorialTrigger : MonoBehaviour
 	public int 					tutorialIndex;
 	public float				tutorialDuration;
 	public bool 				isActive = true;
+	public bool					useImage = false;
+	public string				imageName = "";
+
 	public Vector3				cameraPosition;
-	
+
 	public InGameSceneManager	gameSceneManager;
-	
+
+	void Start()
+	{
+		if (gameSceneManager == null)
+			gameSceneManager = ((GameObject)GameObject.Find("InGameSceneManager")).GetComponent<InGameSceneManager>();
+	}
 	void OnTriggerEnter2D(Collider2D p_coll) 
 	{
 		//if it collides with a player
@@ -17,13 +25,14 @@ public class TutorialTrigger : MonoBehaviour
 		{
 			if (!isActive)
 				return;
-			Debug.Log("Trigger Tutorial " + tutorialIndex);
+			//Debug.Log("Trigger Tutorial " + tutorialIndex);
 
-			EnableTrigger(false);
+			//EnableTrigger(false);
 
 			TutorialManager.currentTutorialIndex = tutorialIndex;
-			TutorialManager.currentTutorialDuration = tutorialDuration;
+			//TutorialManager.currentTutorialDuration = tutorialDuration;
 			TutorialManager.currentTutorialCameraPosition = cameraPosition;
+			TutorialManager.currentTutorialImageName = imageName;
 			gameSceneManager.ChangeToState(InGameSceneManager.InGameStates.TUTORIAL);
 		}
 	}

@@ -32,14 +32,25 @@ public class LevelInfo : MonoBehaviour
 	{
 		platformsList.Clear ();
 		playerSpawnPosition = Vector3.zero;
+
+		platformsList = new List<Platform> ();
+		tutorialTriggersList = new List<TutorialTrigger> ();
+		energySphere = null;
+
 	}
 
 	public void RestartStage()
 	{
 		playerCamera.cameraState = PlayerCamera.CameraState.FOLLOWING_PLAYER;
 		player.transform.position = playerSpawnPosition;
+		if (player.isInverted)
+			player.InvertGravity();
 		player.rigidbody2D.isKinematic = true;
 		player.rigidbody2D.isKinematic = false;
+
+		foreach (Shoot shoot in player.activeShootsList)
+			Destroy(shoot.gameObject);
+		player.activeShootsList.Clear ();
 
 		foreach (Platform plat in platformsList)
 			plat.ChangePlatformType (plat.platformStartType);

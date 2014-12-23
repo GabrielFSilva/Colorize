@@ -22,14 +22,16 @@ public class Player : MonoBehaviour
 	public bool leftArrow = false;
 	public bool rightArrow = false;
 	
-	public bool grounded = true;
+	public bool  grounded = true;
 	private bool _groundedFlag = false;
 
 	public float onAirForceMultiplier;
 	public float maxHorizontalVelocity;
 	public float maxHorizontalBuffedVelocity;
 
-	public float yDeath;
+	public float 		yDeath;
+
+	public bool 		isInverted = false;
 
 	public bool 		isPaused = false;
 	public Vector2 		playerVelocity;
@@ -80,49 +82,28 @@ public class Player : MonoBehaviour
 	/// </summary>
 	void FixedUpdate()
 	{
-		if (grounded)
+		if (leftArrow || Input.GetKey(KeyCode.A))
 		{
-			if (leftArrow || Input.GetKey(KeyCode.A))
-			{
-				if (_blueBuffActive)
-					rigidbody2D.AddForce(new Vector2(-1f * buffedRunForce,0));
-				else
-					rigidbody2D.AddForce(new Vector2(-1f * commonRunForce,0));
-				transform.localScale = new Vector3(-1f,transform.localScale.y,1f);
-			}
-			else if (rightArrow || Input.GetKey(KeyCode.D))
-			{
-				if (_blueBuffActive)
-					rigidbody2D.AddForce(new Vector2(buffedRunForce,0));
-				else
-					rigidbody2D.AddForce(new Vector2(commonRunForce,0));
-				transform.localScale = new Vector3(1f,transform.localScale.y,1f);
-			}
-
 			if (_blueBuffActive)
-				rigidbody2D.velocity = new Vector2 (Mathf.Clamp(rigidbody2D.velocity.x, maxHorizontalBuffedVelocity *-1 ,maxHorizontalBuffedVelocity), rigidbody2D.velocity.y);
+				rigidbody2D.AddForce(new Vector2(-1f * buffedRunForce,0));
 			else
-				rigidbody2D.velocity = new Vector2 (Mathf.Clamp(rigidbody2D.velocity.x, maxHorizontalVelocity *-1 ,maxHorizontalVelocity), rigidbody2D.velocity.y);
+				rigidbody2D.AddForce(new Vector2(-1f * commonRunForce,0));
+			transform.localScale = new Vector3(-1f,transform.localScale.y,1f);
 		}
-		else
+		else if (rightArrow || Input.GetKey(KeyCode.D))
 		{
-			if (leftArrow || Input.GetKey(KeyCode.A))
-			{
-				if (_blueBuffActive)
-					rigidbody2D.AddForce(new Vector2(-1f * onAirForceMultiplier * buffedRunForce,0));
-				else
-					rigidbody2D.AddForce(new Vector2(-1f * onAirForceMultiplier * commonRunForce,0));
-				transform.localScale = new Vector3(-1f,transform.localScale.y,1f);
-			}
-			else if (rightArrow || Input.GetKey(KeyCode.D))
-			{
-				if (_blueBuffActive)
-					rigidbody2D.AddForce(new Vector2(onAirForceMultiplier * buffedRunForce,0));
-				else
-					rigidbody2D.AddForce(new Vector2(onAirForceMultiplier * commonRunForce,0));
-				transform.localScale = new Vector3(1f,transform.localScale.y,1f);
-			}
+			if (_blueBuffActive)
+				rigidbody2D.AddForce(new Vector2(buffedRunForce,0));
+			else
+				rigidbody2D.AddForce(new Vector2(commonRunForce,0));
+			transform.localScale = new Vector3(1f,transform.localScale.y,1f);
 		}
+
+		if (_blueBuffActive)
+			rigidbody2D.velocity = new Vector2 (Mathf.Clamp(rigidbody2D.velocity.x, maxHorizontalBuffedVelocity *-1 ,maxHorizontalBuffedVelocity), rigidbody2D.velocity.y);
+		else
+			rigidbody2D.velocity = new Vector2 (Mathf.Clamp(rigidbody2D.velocity.x, maxHorizontalVelocity *-1 ,maxHorizontalVelocity), rigidbody2D.velocity.y);
+	
 
 		if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space))
 			Jump();
@@ -133,6 +114,7 @@ public class Player : MonoBehaviour
 		animator.SetFloat ("SpeedX",Mathf.Abs(rigidbody2D.velocity.x));
 		animator.SetFloat ("SpeedY",rigidbody2D.velocity.y);
 		animator.SetFloat ("SpeedYAbs",Mathf.Abs(rigidbody2D.velocity.y));
+		animator.SetBool ("AddingForce", leftArrow || rightArrow || Input.GetKey (KeyCode.A) || Input.GetKey (KeyCode.D) ? true : false);
 	}
 
 	/// <summary>
@@ -151,6 +133,9 @@ public class Player : MonoBehaviour
 					PlatformCollision(collisions[i].GetComponent<Platform>().platformType);
 			}
 			grounded = _groundedFlag;
+
+			if (grounded &&  Mathf.Abs(rigidbody2D.velocity.y)> 0.1f)
+				grounded = false;
 		}
 		else
 			grounded = false;
@@ -190,6 +175,8 @@ public class Player : MonoBehaviour
 	/// </summary>
 	public void InvertGravity()
 	{
+		isInverted = !isInverted;
+
 		rigidbody2D.gravityScale *= -1f;
 		transform.localScale = new Vector3 (transform.localScale.x, transform.localScale.y * -1f, 1f);
 	}
@@ -206,19 +193,19 @@ public class Player : MonoBehaviour
 		if (_redBuffActive)
 		{
 			_redBuffTimer += Time.deltaTime;
-			if (_redBuffTimer >= redBuffDuration)
+			if (_redBuffTimer >= redBuffDuration && grounded)
 				_redBuffActive = false;
 		}
 		if (_blueBuffActive)
 		{
 			_blueBuffTimer += Time.deltaTime;
-			if (_blueBuffTimer >= blueBuffDuration)
+			if (_blueBuffTimer >= blueBuffDuration && grounded)
 				_blueBuffActive = false;
 		}
 		if (_greenBuffActive)
 		{
 			_greenBuffTimer += Time.deltaTime;
-			if (_greenBuffTimer >= greenBuffDuration)
+			if (_greenBuffTimer >= greenBuffDuration && grounded)
 				_greenBuffActive = false;
 		}
 
@@ -335,6 +322,8 @@ public class Player : MonoBehaviour
 	{
 		playerVelocity = Vector2.zero;
 		playerAngularVelocity = 0f;
+		leftArrow = false;
+		rightArrow = false;
 	}
 	
 }

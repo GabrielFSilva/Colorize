@@ -9,7 +9,8 @@ public class StageSelectMenuState : MonoBehaviour
 	public GFSCustomButton 				selectButton;
 	public GameObject 					stageButtonPrefab;
 	public UIGrid 						stageGrid;
-	
+	public UIPanel						stageScrollview;
+
 	public List<GFSCustomButton> 		stageButtonsList;
 	public List<UISprite> 				stageSpritesList;
 
@@ -26,7 +27,12 @@ public class StageSelectMenuState : MonoBehaviour
 	{
 		returnButton.onClick += ReturnButtonClicked;
 		selectButton.onClick += SelectButtonClicked;
-		
+
+		_selectStage = 1;
+		stageScrollview.transform.position = Vector3.zero;
+		stageScrollview.clipOffset = Vector2.zero;
+		//stageScrollview.Refresh ();
+
 		CreateStageButtons ();
 		UpdateStageButtonSprites ();
 		

@@ -56,7 +56,7 @@ public class Platform : MonoBehaviour
 
 	public void ChangePlatformType(GlobalInfo.PlaformType p_platType)
 	{
-		if (platformType == p_platType)
+		if (platformType == p_platType || isLocked)
 			return;
 
 		platformType = p_platType;

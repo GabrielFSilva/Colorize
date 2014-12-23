@@ -75,7 +75,12 @@ public class FinishedInGameState : MonoBehaviour
 		ignoreClicks = false;
 		if (clickCall == 0)
 		{
-			if (ChaptersManager.GetInstance().chaptersList.chapters[InGameSceneManager.selectedChapter -1].stages.Count > InGameSceneManager.selectedStage)
+			if (InGameSceneManager.selectedChapter == 2 && InGameSceneManager.selectedStage == 7)
+			{
+				Application.LoadLevel("MainMenuScene");
+			}
+
+			else if (ChaptersManager.GetInstance().chaptersList.chapters[InGameSceneManager.selectedChapter -1].stages.Count > InGameSceneManager.selectedStage)
 			{
 				InGameSceneManager.selectedStage ++;
 				Application.LoadLevel (Application.loadedLevelName);

@@ -61,6 +61,7 @@ public class LevelLoader : MonoBehaviour
 				shootsUIManager.shootTypesList.Add((GlobalInfo.ShootTypes)int.Parse(shootNode.Attributes["type"].Value));
 				shootsUIManager.shootInfiniteAmmoList.Add(bool.Parse(shootNode.Attributes["isInfinite"].Value));
 				shootsUIManager.shootAmmoList.Add(int.Parse(shootNode.Attributes["ammo"].Value));
+				shootsUIManager.shootStartAmmoList.Add(int.Parse(shootNode.Attributes["ammo"].Value));
 				shootsUIManager.shootTutorialFocus.Add(int.Parse(shootNode.Attributes["tutFocus"].Value));
 			}
 		}
@@ -89,6 +90,10 @@ public class LevelLoader : MonoBehaviour
 			__tempTrigger.transform.parent = tutorialTriggersContainerTransform;
 			__tempTrigger.transform.position = new Vector3(float.Parse(tutorialTriggerNode.Attributes["x"].Value),float.Parse(tutorialTriggerNode.Attributes["y"].Value),float.Parse(tutorialTriggerNode.Attributes["z"].Value));
 			__tempTrigger.tutorialIndex = int.Parse(tutorialTriggerNode.Attributes["index"].Value);
+			//if (tutorialTriggerNode.Attributes["img"]
+			if (tutorialTriggerNode.Attributes.GetNamedItem("img") != null)
+			__tempTrigger.imageName = tutorialTriggerNode.Attributes["img"].Value;
+
 			__tempTrigger.GetComponent<BoxCollider2D>().size = new Vector2 (__tempTrigger.GetComponent<BoxCollider2D>().size.x,
 			                                                                int.Parse(tutorialTriggerNode.Attributes["colliderY"].Value));
 			__tempTrigger.cameraPosition = new Vector3(float.Parse(tutorialTriggerNode.Attributes["xCam"].Value),float.Parse(tutorialTriggerNode.Attributes["yCam"].Value),float.Parse(tutorialTriggerNode.Attributes["zCam"].Value));
@@ -96,6 +101,7 @@ public class LevelLoader : MonoBehaviour
 			__tempTrigger.name = "TutorialTrigger" + __tempTrigger.tutorialIndex.ToString();
 			
 			LevelInfo.tutorialTriggersList.Add(__tempTrigger);
+
 		}
 
 		////////////////////////////////////////////////////////////////////
@@ -108,6 +114,7 @@ public class LevelLoader : MonoBehaviour
 		LevelInfo.energySphere.name = "EnergySphere";
 		LevelInfo.energySphere.tutorialFocusIndex = int.Parse(energySphereNode.Attributes["tutFocus"].Value);
 		LevelInfo.energySphere.gameSceneManager = gameSceneManager;
+		LevelInfo.energySphere.sphereType = (GlobalInfo.ShootTypes)int.Parse(energySphereNode.Attributes ["type"].Value);
 		////////////////////////////////////////////////////////////////////
 		// Load Player
 		XmlNode playerNode = xmlDoc.SelectSingleNode ("//Player");

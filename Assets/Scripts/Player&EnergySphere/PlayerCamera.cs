@@ -5,6 +5,7 @@ public class PlayerCamera : MonoBehaviour
 {
 	public LevelInfo levelInfo;
 	public InGameSceneManager	gameSceneManager;
+	public ShootsUIManager		shootUIManager;
 
 	public Player player;
 	public Vector3 tutorialModePosition;
@@ -21,6 +22,7 @@ public class PlayerCamera : MonoBehaviour
 		TUTORIAL_MODE,
 		OVERVIEW_MODE
 	}
+
 	public CameraState cameraState = CameraState.FOLLOWING_PLAYER;
 	// Use this for initialization
 	void Start () 
@@ -47,11 +49,24 @@ public class PlayerCamera : MonoBehaviour
 
 			if (player.transform.position.y < player.yDeath)
 				cameraState = CameraState.DEAD_PLAYER;
+
+			if (player.transform.position.y > player.yDeath * -2f)
+				cameraState = CameraState.DEAD_PLAYER;
 		}
 		else if (cameraState == CameraState.DEAD_PLAYER)
 		{
 			if (player.transform.position.y < player.yDeath *2f)
+			{
+				shootUIManager.RestartAmmo();
 				levelInfo.RestartStage();
+			}
+
+			if (player.transform.position.y > player.yDeath * 5f)
+			{
+				shootUIManager.RestartAmmo();
+				levelInfo.RestartStage();
+			}
+
 		}
 		else if (cameraState == CameraState.TUTORIAL_MODE)
 		{
